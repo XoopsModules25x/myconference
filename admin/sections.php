@@ -18,68 +18,70 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA //
 // ------------------------------------------------------------------------- //
 
-include "header.php";
-include "conference.php";
-include_once XOOPS_ROOT_PATH."/class/module.errorhandler.php";
+include __DIR__ . '/admin_header.php';
+include __DIR__ . '/conference.php';
+include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 
-$eh = new ErrorHandler; 
+$myts = MyTextSanitizer::getInstance();
 
-if (isset($HTTP_POST_VARS['fct'])) {
-    $fct = trim($HTTP_POST_VARS['fct']);
+$eh = new ErrorHandler;
+
+if (isset($_POST['fct'])) {
+    $fct = trim($_POST['fct']);
 }
-if (isset($HTTP_GET_VARS['fct'])) {
-    $fct = trim($HTTP_GET_VARS['fct']);
+if (isset($_GET['fct'])) {
+    $fct = trim($_GET['fct']);
 }
 
-//if (isset($HTTP_POST_VARS)) {
-//    foreach ( $HTTP_POST_VARS as $k => $v ) {
+//if (isset($_POST)) {
+//    foreach ($_POST as $k => $v) {
 //        echo "k ($k) = v ($v)<br>";
 //    }
 //}
 
-if (!isset($fct)){
+if (!isset($fct)) {
     $fct = '';
 }
-switch ( $fct ) {
-    case "updsection":
-        $eh = new ErrorHandler;
-        $sid = $HTTP_POST_VARS['sid'];
-        $title = $HTTP_POST_VARS['title'];
-        $abstract = $HTTP_POST_VARS['abstract'];
-        $cid = $HTTP_POST_VARS['cid'];
-        $result = $xoopsDB->query("UPDATE ".$xoopsDB->prefix("myconference_sections")." SET title='$title', abstract='$abstract', cid='$cid' WHERE sid=$sid") or $eh->show("0013");
+switch ($fct) {
+    case 'updsection':
+        $eh      = new ErrorHandler;
+        $sid     = $_POST['sid'];
+        $title   = $_POST['title'];
+        $summary = $_POST['summary'];
+        $cid     = $_POST['cid'];
+        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_sections') . " SET title='$title', summary='$summary', cid='$cid' WHERE sid=$sid") OR $eh::show('0013');
         if ($result) {
-            redirect_header("sections.php",2,_MD_DBUPDATED);
+            redirect_header('sections.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
         break;
-    case "editsection":
+    case 'editsection':
         xoops_cp_header();
-        showAdmin();
-        $action = $HTTP_POST_VARS['action'];
-        $sid = $HTTP_POST_VARS['sid'];
-        if ($action == 'upd') {
-            $sid = trim($HTTP_POST_VARS['sid']) or $eh->show("1001");
-            $result = $xoopsDB->query("SELECT title, cid, abstract FROM ".$xoopsDB->prefix("myconference_sections")." WHERE sid=$sid") or $eh->show("0013");
-            list($title_v, $cid_v, $abstract_v) = $xoopsDB->fetchRow($result);
 
-            $title = new XoopsFormText(_MD_TITLE, "title", 50, 100, $title_v);
+        $action = $_POST['action'];
+        $sid    = $_POST['sid'];
+        if ($action === 'upd') {
+            $sid = trim($_POST['sid']) OR $eh::show('1001');
+            $result = $xoopsDB->query('SELECT title, cid, summary FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE sid=$sid") OR $eh::show('0013');
+            list($title_v, $cid_v, $summary_v) = $xoopsDB->fetchRow($result);
+
+            $title = new XoopsFormText(_AM_MYCONFERENCE_TITLE, 'title', 50, 100, $title_v);
             // Get all congresses defined
-            $result = $xoopsDB->query("SELECT cid, title FROM ".$xoopsDB->prefix("myconference_main")." ORDER BY title ASC") or $eh->show("0013");
-            $conferences_select = new XoopsFormSelect(_MD_CONGRESS, "cid", $cid_v);
-            while (list($cid, $ctitle) = $xoopsDB->fetchRow($result) ) {
+            $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY title ASC') OR $eh::show('0013');
+            $conferences_select = new XoopsFormSelect(_AM_MYCONFERENCE_CONGRESS, 'cid', $cid_v);
+            while (list($cid, $ctitle) = $xoopsDB->fetchRow($result)) {
                 $conferences_select->addOption($cid, $ctitle);
             }
 
-            $fct = new XoopsFormHidden("fct", "updsection");
-            $sid = new XoopsFormHidden("sid", $sid);
-            $abstract = new XoopsFormTextArea(_MD_ABSTRACT, "abstract", "", 25, 100);
-            $abstract->setValue($abstract_v);
-            $submit_button = new XoopsFormButton("", "submit", _MD_UPDATE, "submit");
+            $fct     = new XoopsFormHidden('fct', 'updsection');
+            $sid     = new XoopsFormHidden('sid', $sid);
+            $summary = new XoopsFormTextArea(_AM_MYCONFERENCE_SUMMARY, 'summary', '', 25, 100);
+            $summary->setValue($summary_v);
+            $submit_button = new XoopsFormButton('', 'submit', _AM_MYCONFERENCE_UPDATE, 'submit');
 
-            $form = new XoopsThemeForm(_MD_UPDSECTION, "editsectionform", "sections.php");
+            $form = new XoopsThemeForm(_AM_MYCONFERENCE_UPDSECTION, 'editsectionform', 'sections.php');
             $form->addElement($title, true);
             $form->addElement($conferences_select, true);
-            $form->addElement($abstract);
+            $form->addElement($summary);
             $form->addElement($fct);
             $form->addElement($sid);
             $form->addElement($submit_button);
@@ -87,68 +89,76 @@ switch ( $fct ) {
             $form->display();
 
             xoops_cp_footer();
-        } elseif ($action == 'del') {
-            $sid = trim($HTTP_POST_VARS['sid']) or $eh->show("1001");
-            xoops_confirm(array('fct' => 'delsectionok', 'sid' => $sid), 'sections.php', _MD_DELSECTION);
+        } elseif ($action === 'del') {
+            $sid = trim($_POST['sid']) OR $eh::show('1001');
+            xoops_confirm(array('fct' => 'delsectionok', 'sid' => $sid), 'sections.php', _AM_MYCONFERENCE_DELSECTION);
             xoops_cp_footer();
-        } 
+        }
         break;
 
-    case "delsectionok":
-        $sid = trim($HTTP_POST_VARS['sid']) or $eh->show("1001");
-        $result = $xoopsDB->query("DELETE FROM ".$xoopsDB->prefix("myconference_sections")." WHERE sid=$sid") or $eh->show("0013");
-        redirect_header("sections.php",2,_MD_DBUPDATED);
+    case 'delsectionok':
+        $sid = trim($_POST['sid']) OR $eh::show('1001');
+        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE sid=$sid") OR $eh::show('0013');
+        redirect_header('sections.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         break;
 
-    case "addsection":
-        global $HTTP_POST_VARS;
+    case 'addsection':
+
+        $cid     = (int)$_POST['cid'];
+        $title   = $myts->stripslashesGPC(trim($_POST['title']));
+        $summary = $myts->stripslashesGPC(trim($_POST['summary']));
+
         $eh = new ErrorHandler;
 
-        $result = $xoopsDB->query("INSERT INTO ".$xoopsDB->prefix("myconference_sections")." (title,cid,abstract) VALUES (\"$title\",\"$cid\",\"$abstract\")") or $eh->show("0013");
+        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_sections') . " (cid, title, summary) VALUES ('$cid', '$title', '$summary')") OR $eh::show('0013');
+
         if ($result) {
-            redirect_header("sections.php",2,_MD_DBUPDATED);
+            redirect_header('sections.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
         break;
 
     default:
         xoops_cp_header();
-        showAdmin();
+
         // Get available sections for the Update/Delete form
-        $result = $xoopsDB->query("SELECT sid, title FROM ".$xoopsDB->prefix("myconference_sections")." ORDER BY title ASC") or $eh->show("0013");
-        $section_select = new XoopsFormSelect(_MD_TITLE, "sid");
-        while (list($sid, $title) = $xoopsDB->fetchRow($result) ) {
+        $result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . ' ORDER BY title ASC') OR $eh::show('0013');
+        $section_select = new XoopsFormSelect(_AM_MYCONFERENCE_TITLE, 'sid');
+        while (list($sid, $title) = $xoopsDB->fetchRow($result)) {
             $section_select->addOption($sid, $title);
         }
-        $action_select = new XoopsFormSelect(_MD_ACTION, "action");
-        $action_select->addOption("upd", _MD_EDIT);
-        $action_select->addOption("del", _MD_DELE);
-        $fct = new XoopsFormHidden("fct", "editsection");
-        $submit_button = new XoopsFormButton("", "submit", _MD_SUBMIT, "submit");
+        //set two actions: Edit and Delete
+        $action_select = new XoopsFormSelect(_AM_MYCONFERENCE_ACTION, 'action');
+        $action_select->addOption('upd', _AM_MYCONFERENCE_EDIT);
+        $action_select->addOption('del', _AM_MYCONFERENCE_DELE);
+        $fct           = new XoopsFormHidden('fct', 'editsection');
+        $submit_button = new XoopsFormButton('', 'submit', _AM_MYCONFERENCE_SUBMIT, 'submit');
 
-        $editform = new XoopsThemeForm(_MD_EDITSECTION, "editsectionform", "sections.php");
+        // if editing
+        $editform = new XoopsThemeForm(_AM_MYCONFERENCE_EDITSECTION, 'editsectionform', 'sections.php');
         $editform->addElement($fct);
         $editform->addElement($section_select);
         $editform->addElement($action_select);
         $editform->addElement($submit_button);
 
-        $editform->display();
+        $editform->display(); //if editing, this is the end
 
-        $title = new XoopsFormText(_MD_TITLE, "title", 50, 100);
-        $fct = new XoopsFormHidden("fct", "addsection");
-        $abstract = new XoopsFormTextArea(_MD_ABSTRACT, "abstract", "", 25, 100);
-        $submit_button = new XoopsFormButton("", "submit", _MD_ADD, "submit");
+        //----------------- add new -----------------
+
+        $title         = new XoopsFormText(_AM_MYCONFERENCE_TITLE, 'title', 50, 100);
+        $fct           = new XoopsFormHidden('fct', 'addsection');
+        $summary       = new XoopsFormTextArea(_AM_MYCONFERENCE_SUMMARY, 'summary', '', 25, 100);
+        $submit_button = new XoopsFormButton('', 'submit', _AM_MYCONFERENCE_ADD, 'submit');
         // Get all congresses defined
-        $result = $xoopsDB->query("SELECT cid, title FROM ".$xoopsDB->prefix("myconference_main")." ORDER BY title ASC") or $eh->show("0013");
-        $conferences_select = new XoopsFormSelect(_MD_CONGRESS, "cid");
-        while (list($cid, $ctitle) = $xoopsDB->fetchRow($result) ) {
+        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY title ASC') OR $eh::show('0013');
+        $conferences_select = new XoopsFormSelect(_AM_MYCONFERENCE_CONGRESS, 'cid');
+        while (list($cid, $ctitle) = $xoopsDB->fetchRow($result)) {
             $conferences_select->addOption($cid, $ctitle);
         }
 
-
-        $form = new XoopsThemeForm(_MD_ADDSECTION, "addsectionform", "sections.php");
+        $form = new XoopsThemeForm(_AM_MYCONFERENCE_ADDSECTION, 'addsectionform', 'sections.php');
         $form->addElement($title, true);
         $form->addElement($conferences_select, true);
-        $form->addElement($abstract);
+        $form->addElement($summary);
         $form->addElement($fct);
         $form->addElement($submit_button);
 
@@ -156,5 +166,3 @@ switch ( $fct ) {
 
         xoops_cp_footer();
 }
-
-?>

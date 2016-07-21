@@ -18,78 +18,81 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA //
 // ------------------------------------------------------------------------- //
 
-include "header.php";
-include "conference.php";
-include_once XOOPS_ROOT_PATH."/class/module.errorhandler.php";
+include __DIR__ . '/admin_header.php';
+include __DIR__ . '/conference.php';
+include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 
-$eh = new ErrorHandler; 
+$myts = MyTextSanitizer::getInstance();
 
-if (isset($HTTP_POST_VARS['fct'])) {
-    $fct = trim($HTTP_POST_VARS['fct']);
+$eh = new ErrorHandler;
+
+if (isset($_POST['fct'])) {
+    $fct = trim($_POST['fct']);
 }
-if (isset($HTTP_GET_VARS['fct'])) {
-    $fct = trim($HTTP_GET_VARS['fct']);
+if (isset($_GET['fct'])) {
+    $fct = trim($_GET['fct']);
 }
 
-//if (isset($HTTP_POST_VARS)) {
-//    foreach ( $HTTP_POST_VARS as $k => $v ) {
+//if (isset($_POST)) {
+//    foreach ($_POST as $k => $v) {
 //        echo "k ($k) = v ($v)<br>";
 //    }
 //}
 
-if (!isset($fct)){
+if (!isset($fct)) {
     $fct = '';
 }
-switch ( $fct ) {
-    case "updconference":
-        $eh = new ErrorHandler;
-        $cid = $HTTP_POST_VARS['cid'];
-        $isdefault = $HTTP_POST_VARS['isdefault'];
-        $title = $HTTP_POST_VARS['title'];
-        $subtitle = $HTTP_POST_VARS['subtitle'];
-        $subsubtitle = $HTTP_POST_VARS['subsubtitle'];
-        $sdate = $HTTP_POST_VARS['sdate'];
-        $edate = $HTTP_POST_VARS['edate'];
-        $abstract = $HTTP_POST_VARS['abstract'];
+switch ($fct) {
+    case 'updconference':
+        $eh          = new ErrorHandler;
+        $cid         = $_POST['cid'];
+        $isdefault   = $_POST['isdefault'];
+        $title       = $_POST['title'];
+        $subtitle    = $_POST['subtitle'];
+        $subsubtitle = $_POST['subsubtitle'];
+        $sdate       = $_POST['sdate'];
+        $edate       = $_POST['edate'];
+        $summary     = $_POST['summary'];
         if ($isdefault) {
-            // Since this guy is our default congress, will update all the other congresses out there
-            $result = $xoopsDB->query("UPDATE ".$xoopsDB->prefix("myconference_main")." SET isdefault=0") or $eh->show("0013");
+            // Since this is our default congress, we will update all the other congresses out there
+            $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . ' SET isdefault=0') OR $eh::show('0013');
         }
-        $result = $xoopsDB->query("UPDATE ".$xoopsDB->prefix("myconference_main")." SET isdefault='$isdefault', title='$title', subtitle='$subtitle', subsubtitle='$subsubtitle', sdate='$sdate', edate='$edate', abstract='$abstract' WHERE cid=$cid") or $eh->show("0013");
+        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . " SET isdefault='$isdefault', title='$title', subtitle='$subtitle', subsubtitle='$subsubtitle', sdate='$sdate', edate='$edate', summary='$summary' WHERE cid=$cid") OR $eh::show('0013');
         if ($result) {
-            redirect_header("main.php",2,_MD_DBUPDATED);
+            redirect_header('main.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
         break;
-    case "editconference":
+    case 'editconference':
         xoops_cp_header();
-        showAdmin();
-        $action = $HTTP_POST_VARS['action'];
-        $cid = $HTTP_POST_VARS['cid'];
-        if ($action == 'upd') {
-            $cid = trim($HTTP_POST_VARS['cid']) or $eh->show("1001");
-            $result = $xoopsDB->query("SELECT isdefault,title,subtitle,subsubtitle,sdate,edate,abstract FROM ".$xoopsDB->prefix("myconference_main")." WHERE cid=$cid") or $eh->show("0013");
-            list($isdefault_v, $title_v, $subtitle_v, $subsubtitle_v, $sdate_v, $edate_v, $abstract_v) = $xoopsDB->fetchRow($result);
 
-            $title = new XoopsFormText(_MD_TITLE, "title", 50, 200, $title_v);
-            $isdefault = new XoopsFormRadioYN(_MD_ISDEFAULT, "isdefault", $isdefault_v);
-            $subtitle = new XoopsFormText(_MD_SUBTITLE, "subtitle", 50, 200, $subtitle_v);
-            $subsubtitle = new XoopsFormText(_MD_SUBSUBTITLE, "subsubtitle", 50, 200, $subsubtitle_v);
-            $sdate = new XoopsFormText(_MD_SDATE, "sdate", 10, 10, $sdate_v);
-            $edate = new XoopsFormText(_MD_EDATE, "edate", 10, 10, $edate_v);
-            $fct = new XoopsFormHidden("fct", "updconference");
-            $cid = new XoopsFormHidden("cid", $cid);
-            $abstract = new XoopsFormTextArea(_MD_ABSTRACT, "abstract", "", 25, 100);
-            $abstract->setValue($abstract_v);
-            $submit_button = new XoopsFormButton("", "submit", _MD_UPDATE, "submit");
+        $action = $_POST['action'];
+        $cid    = $_POST['cid'];
+        if ($action === 'upd') {
+            $cid = trim($_POST['cid']) OR $eh::show('1001');
+            $result = $xoopsDB->query('SELECT isdefault,title,subtitle,subsubtitle,sdate,edate,summary FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") OR $eh::show('0013');
+            list($isdefault_v, $title_v, $subtitle_v, $subsubtitle_v, $sdate_v, $edate_v, $summary_v) = $xoopsDB->fetchRow($result);
 
-            $form = new XoopsThemeForm(_MD_UPDCONFERENCE, "", "main.php");
+            $title       = new XoopsFormText(_AM_MYCONFERENCE_TITLE, 'title', 50, 200, $title_v);
+            $isdefault   = new XoopsFormRadioYN(_AM_MYCONFERENCE_ISDEFAULT, 'isdefault', $isdefault_v);
+            $subtitle    = new XoopsFormText(_AM_MYCONFERENCE_SUBTITLE, 'subtitle', 50, 200, $subtitle_v);
+            $subsubtitle = new XoopsFormText(_AM_MYCONFERENCE_SUBSUBTITLE, 'subsubtitle', 50, 200, $subsubtitle_v);
+            $sdate       = new XoopsFormTextDateSelect(_AM_MYCONFERENCE_SDATE, 'sdate', 10, strtotime($sdate_v));
+            $edate       = new XoopsFormTextDateSelect(_AM_MYCONFERENCE_SDATE, 'edate', 10, strtotime($edate_v));
+
+            $fct     = new XoopsFormHidden('fct', 'updconference');
+            $cid     = new XoopsFormHidden('cid', $cid);
+            $summary = new XoopsFormTextArea(_AM_MYCONFERENCE_SUMMARY, 'summary', '', 25, 100);
+            $summary->setValue($summary_v);
+            $submit_button = new XoopsFormButton('', 'submit', _AM_MYCONFERENCE_UPDATE, 'submit');
+
+            $form = new XoopsThemeForm(_AM_MYCONFERENCE_UPDCONFERENCE, '', 'main.php');
             $form->addElement($title, true);
             $form->addElement($isdefault);
             $form->addElement($subtitle);
             $form->addElement($subsubtitle);
             $form->addElement($sdate);
             $form->addElement($edate);
-            $form->addElement($abstract);
+            $form->addElement($summary);
             $form->addElement($fct);
             $form->addElement($cid);
             $form->addElement($submit_button);
@@ -97,51 +100,57 @@ switch ( $fct ) {
             $form->display();
 
             xoops_cp_footer();
-        } elseif ($action == 'del') {
-            $cid = trim($HTTP_POST_VARS['cid']) or $eh->show("1001");
-            xoops_confirm(array('fct' => 'delconferenceok', 'cid' => $cid), 'main.php', _MD_DELCONFERENCE);
+        } elseif ($action === 'del') {
+            $cid = trim($_POST['cid']) OR $eh::show('1001');
+            xoops_confirm(array('fct' => 'delconferenceok', 'cid' => $cid), 'main.php', _AM_MYCONFERENCE_DELCONFERENCE);
             xoops_cp_footer();
-        } 
+        }
         break;
 
-    case "delconferenceok":
-        $cid = trim($HTTP_POST_VARS['cid']) or $eh->show("1001");
-        $result = $xoopsDB->query("DELETE FROM ".$xoopsDB->prefix("myconference_main")." WHERE cid=$cid") or $eh->show("0013");
-        redirect_header("main.php",2,_MD_DBUPDATED);
+    case 'delconferenceok':
+        $cid = trim($_POST['cid']) OR $eh::show('1001');
+        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") OR $eh::show('0013');
+        redirect_header('main.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         break;
 
-    case "addconference":
-        global $HTTP_POST_VARS;
+    case 'addconference':
+        //global $_POST;
         $eh = new ErrorHandler;
-        $sdate = array_shift($sdate);
-        $edate = array_shift($edate);
+
+        $sdate       = $_POST['sdate'];
+        $edate       = $_POST['edate'];
+        $isdefault   = (int)$_POST['isdefault'];
+        $title       = $myts->stripslashesGPC(trim($_POST['title']));
+        $subtitle    = $myts->stripslashesGPC(trim($_POST['subtitle']));
+        $subsubtitle = $myts->stripslashesGPC(trim($_POST['subsubtitle']));
+        $summary     = $myts->stripslashesGPC(trim($_POST['summary']));
 
         if ($isdefault) {
             // Since this guy is our default congress, will update all the other congresses out there
-            $result = $xoopsDB->query("UPDATE ".$xoopsDB->prefix("myconference_main")." SET isdefault=0") or $eh->show("0013");
+            $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . ' SET isdefault=0') OR $eh::show('0013');
         }
-        $result = $xoopsDB->query("INSERT INTO ".$xoopsDB->prefix("myconference_main")." (isdefault,title,subtitle,subsubtitle,sdate,edate,abstract) VALUES (\"$isdefault\",\"$title\",\"$subtitle\",\"$subsubtitle\",\"$sdate\",\"$edate\",\"$abstract\")") or $eh->show("0013");
+        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_main') . " (isdefault,title,subtitle,subsubtitle,sdate,edate,summary) VALUES ('$isdefault','$title','$subtitle','$subsubtitle','$sdate','$edate','$summary')") OR $eh::show('0013');
         if ($result) {
-            redirect_header("main.php",2,_MD_DBUPDATED);
+            redirect_header('main.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
         break;
 
     default:
         xoops_cp_header();
-        showAdmin();
+
         // Get available conference for the Update/Delete form
-        $result = $xoopsDB->query("SELECT cid, title FROM ".$xoopsDB->prefix("myconference_main")." ORDER BY title ASC") or $eh->show("0013");
-        $conference_select = new XoopsFormSelect(_MD_TITLE, "cid");
-        while (list($cid, $title) = $xoopsDB->fetchRow($result) ) {
+        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY title ASC') OR $eh::show('0013');
+        $conference_select = new XoopsFormSelect(_AM_MYCONFERENCE_TITLE, 'cid');
+        while (list($cid, $title) = $xoopsDB->fetchRow($result)) {
             $conference_select->addOption($cid, $title);
         }
-        $action_select = new XoopsFormSelect(_MD_ACTION, "action");
-        $action_select->addOption("upd", _MD_EDIT);
-        $action_select->addOption("del", _MD_DELE);
-        $fct = new XoopsFormHidden("fct", "editconference");
-        $submit_button = new XoopsFormButton("", "submit", _MD_SUBMIT, "submit");
+        $action_select = new XoopsFormSelect(_AM_MYCONFERENCE_ACTION, 'action');
+        $action_select->addOption('upd', _AM_MYCONFERENCE_EDIT);
+        $action_select->addOption('del', _AM_MYCONFERENCE_DELE);
+        $fct           = new XoopsFormHidden('fct', 'editconference');
+        $submit_button = new XoopsFormButton('', 'submit', _AM_MYCONFERENCE_SUBMIT, 'submit');
 
-        $editform = new XoopsThemeForm(_MD_EDITCONFERENCE, "", "main.php");
+        $editform = new XoopsThemeForm(_AM_MYCONFERENCE_EDITCONFERENCE, '', 'main.php');
         $editform->addElement($fct);
         $editform->addElement($conference_select);
         $editform->addElement($action_select);
@@ -149,25 +158,25 @@ switch ( $fct ) {
 
         $editform->display();
 
-        $title = new XoopsFormText(_MD_TITLE, "title", 50, 200);
-        $isdefault = new XoopsFormRadioYN(_MD_ISDEFAULT, "isdefault", 0);
-        $subtitle = new XoopsFormText(_MD_SUBTITLE, "subtitle", 50, 200);
-        $subsubtitle = new XoopsFormText(_MD_SUBSUBTITLE, "subsubtitle", 50, 200);
-        $sdate = new XoopsFormDateTime(_MD_SDATE, "sdate", 10);
-        $edate = new XoopsFormDateTime(_MD_EDATE, "edate", 10);
-        $fct = new XoopsFormHidden("fct", "addconference");
-        $cid = new XoopsFormHidden("cid", $cid);
-        $abstract = new XoopsFormTextArea(_MD_ABSTRACT, "abstract", "", 25, 100);
-        $submit_button = new XoopsFormButton("", "submit", _MD_ADD, "submit");
+        $title         = new XoopsFormText(_AM_MYCONFERENCE_TITLE, 'title', 50, 200);
+        $isdefault     = new XoopsFormRadioYN(_AM_MYCONFERENCE_ISDEFAULT, 'isdefault', 0);
+        $subtitle      = new XoopsFormText(_AM_MYCONFERENCE_SUBTITLE, 'subtitle', 50, 200);
+        $subsubtitle   = new XoopsFormText(_AM_MYCONFERENCE_SUBSUBTITLE, 'subsubtitle', 50, 200);
+        $sdate         = new XoopsFormTextDateSelect(_AM_MYCONFERENCE_SDATE, 'sdate', 10, time());
+        $edate         = new XoopsFormTextDateSelect(_AM_MYCONFERENCE_EDATE, 'edate', 10, time());
+        $fct           = new XoopsFormHidden('fct', 'addconference');
+        $cid           = new XoopsFormHidden('cid', $cid);
+        $summary       = new XoopsFormTextArea(_AM_MYCONFERENCE_SUMMARY, 'summary', '', 25, 100);
+        $submit_button = new XoopsFormButton('', 'submit', _AM_MYCONFERENCE_ADD, 'submit');
 
-        $form = new XoopsThemeForm(_MD_ADDCONFERENCE, "", "main.php");
+        $form = new XoopsThemeForm(_AM_MYCONFERENCE_ADDCONFERENCE, '', 'main.php');
         $form->addElement($title, true);
         $form->addElement($isdefault);
         $form->addElement($subtitle);
         $form->addElement($subsubtitle);
         $form->addElement($sdate);
         $form->addElement($edate);
-        $form->addElement($abstract);
+        $form->addElement($summary);
         $form->addElement($fct);
         $form->addElement($cid);
         $form->addElement($submit_button);
@@ -176,5 +185,3 @@ switch ( $fct ) {
 
         xoops_cp_footer();
 }
-
-?>

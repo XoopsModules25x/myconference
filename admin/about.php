@@ -13,16 +13,15 @@
  * @copyright    XOOPS Project http://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
+ * @since
  * @author       XOOPS Development Team
  */
 
 include_once __DIR__ . '/admin_header.php';
-// Display Admin header
 xoops_cp_header();
 
-$indexAdmin = new ModuleAdmin();
-
-echo $indexAdmin->addNavigation(basename(__FILE__));
-echo $indexAdmin->renderIndex();
+$aboutAdmin = new ModuleAdmin();
+echo $aboutAdmin->addNavigation(basename(__FILE__));
+echo $aboutAdmin->renderAbout('6KJ7RW5DR3VTJ', false);
 
 include_once __DIR__ . '/admin_footer.php';

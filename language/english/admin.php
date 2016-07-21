@@ -18,66 +18,86 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA //
 // ------------------------------------------------------------------------- //
 
-define("_MD_ACTION","Action");
-define("_MD_ADDCV","Add a CV");
-define("_MD_EDITCV","Edit a CV");
-define("_MD_DELCV","Delete a CV");
-define("_MD_UPDCV","Update a CV");
-define("_MD_NAME","Name");
-define("_MD_EMAIL","Email Address");
-define("_MD_URL","URL");
-define("_MD_PHOTO","Picture");
-define("_MD_PHOTO_WARN","Picture<br><font color='red'>(picture will be lost if<br> not reentered)</font>");
-define("_MD_COMPANY","Company");
-define("_MD_LOCATION","Location");
-define("_MD_MINICV","Small description");
-define("_MD_SUBMIT","Submit");
-define("_MD_EDIT","Edit");
-define("_MD_DELE","Delete");
-define("_MD_UPDATE","Update");
-define("_MD_DBUPDATED","Database updated");
+define('_AM_MYCONFERENCE_ACTION', 'Action');
+define('_AM_MYCONFERENCE_ADDCV', 'Add a CV');
+define('_AM_MYCONFERENCE_EDITCV', 'Edit a CV');
+define('_AM_MYCONFERENCE_DELCV', 'Delete a CV');
+define('_AM_MYCONFERENCE_UPDCV', 'Update a CV');
+define('_AM_MYCONFERENCE_NAME', 'Name');
+define('_AM_MYCONFERENCE_EMAIL', 'Email Address');
+define('_AM_MYCONFERENCE_URL', 'URL');
+define('_AM_MYCONFERENCE_PHOTO', 'Picture');
+define('_AM_MYCONFERENCE_PHOTO_WARN', "Picture<br><font color='red'>(picture will be lost if<br> not reentered)</font>");
+define('_AM_MYCONFERENCE_COMPANY', 'Company');
+define('_AM_MYCONFERENCE_LOCATION', 'Location');
+define('_AM_MYCONFERENCE_MINICV', 'Small description');
+define('_AM_MYCONFERENCE_SUBMIT', 'Submit');
+define('_AM_MYCONFERENCE_EDIT', 'Edit');
+define('_AM_MYCONFERENCE_DELE', 'Delete');
+define('_AM_MYCONFERENCE_UPDATE', 'Update');
+define('_AM_MYCONFERENCE_DBUPDATED', 'Database updated');
 
-define("_MD_CVS","Curriculums");
-define("_MD_SPO","Sponsors");
-define("_MD_SPE","Speech");
-define("_MD_REG","Registration");
-define("_MD_TRK","Tracks");
+define('_AM_MYCONFERENCE_BIOS', 'Bios');
+define('_AM_MYCONFERENCE_SPO', 'Sponsors');
+define('_AM_MYCONFERENCE_SPE', 'Speech');
+define('_AM_MYCONFERENCE_REG', 'Registration');
+define('_AM_MYCONFERENCE_TRK', 'Tracks');
 
-define("_MD_TITLE","Title");
-define("_MD_ADDSPEECH","Add a Speech");
-define("_MD_EDITSPEECH","Edit a Speech");
-define("_MD_UPDSPEECH","Update a Speech");
-define("_MD_DELSPEECH","Delete this Speech");
-define("_MD_STIME","Start time");
-define("_MD_DATE","Date");
-define("_MD_DURATION","Duration (minutes)");
-define("_MD_SLIDES1","Slides");
-define("_MD_SLIDES2","Slides");
-define("_MD_SLIDES3","Slides");
-define("_MD_SLIDES4","Slides");
-define("_MD_ABSTRACT","Abstract");
-define("_MD_SPEAKERSNAME","Speaker's Name");
-define("_MD_NONE","None");
-define("_MD_TRACKSTITLE","Track's Title");
+define('_AM_MYCONFERENCE_TITLE', 'Title');
+define('_AM_MYCONFERENCE_ADDSPEECH', 'Add a Speech');
+define('_AM_MYCONFERENCE_EDITSPEECH', 'Edit a Speech');
+define('_AM_MYCONFERENCE_UPDSPEECH', 'Update a Speech');
+define('_AM_MYCONFERENCE_DELSPEECH', 'Delete this Speech');
+define('_AM_MYCONFERENCE_STIME', 'Start time');
+define('_AM_MYCONFERENCE_DATE', 'Date');
+define('_AM_MYCONFERENCE_DURATION', 'Duration (minutes)');
+define('_AM_MYCONFERENCE_SLIDES1', 'Slides');
+define('_AM_MYCONFERENCE_SLIDES2', 'Slides');
+define('_AM_MYCONFERENCE_SLIDES3', 'Slides');
+define('_AM_MYCONFERENCE_SLIDES4', 'Slides');
+define('_AM_MYCONFERENCE_SUMMARY', 'Summary');
+define('_AM_MYCONFERENCE_SPEAKERSNAME', "Speaker's Name");
+define('_AM_MYCONFERENCE_NONE', 'None');
+define('_AM_MYCONFERENCE_TRACKSTITLE', "Track's Title");
 
-define("_MD_EDITTRACK","Edit Track");
-define("_MD_ADDTRACK","Add Track");
-define("_MD_UPDTRACK","Update Track");
-define("_MD_ADD","Add");
+define('_AM_MYCONFERENCE_EDITTRACK', 'Edit Track');
+define('_AM_MYCONFERENCE_ADDTRACK', 'Add Track');
+define('_AM_MYCONFERENCE_UPDTRACK', 'Update Track');
+define('_AM_MYCONFERENCE_ADD', 'Add');
 
-define("_MD_ADDCONFERENCE","Add a Conference/Congress");
-define("_MD_EDITCONFERENCE","Edit a Conference/Congress");
-define("_MD_UPDCONFERENCE","Update a Conference/Congress");
-define("_MD_SUBTITLE","Subtitle");
-define("_MD_SUBSUBTITLE","Subsubtitle");
-define("_MD_SDATE","Start date");
-define("_MD_EDATE","End date");
+define('_AM_MYCONFERENCE_ADDCONFERENCE', 'Add a Conference/Conference');
+define('_AM_MYCONFERENCE_EDITCONFERENCE', 'Edit a Conference/Conference');
+define('_AM_MYCONFERENCE_UPDCONFERENCE', 'Update a Conference/Conference');
+define('_AM_MYCONFERENCE_SUBTITLE', 'Subtitle');
+define('_AM_MYCONFERENCE_SUBSUBTITLE', 'Subsubtitle');
+define('_AM_MYCONFERENCE_SDATE', 'Start date');
+define('_AM_MYCONFERENCE_EDATE', 'End date');
 
-define("_MD_CONGRESS","Congress");
-define("_MD_EDITSECTION","Edit Section");
-define("_MD_ADDSECTION","Add Section");
-define("_MD_UPDSECTION","Update Section");
+define('_AM_MYCONFERENCE_CONGRESS', 'Conference');
+define('_AM_MYCONFERENCE_EDITSECTION', 'Edit Section');
+define('_AM_MYCONFERENCE_ADDSECTION', 'Add Section');
+define('_AM_MYCONFERENCE_UPDSECTION', 'Update Section');
 
-define("_MD_CONFERENCESTITLE","Conference's Title");
-define("_MD_ISDEFAULT","Is this the default one?");
-?>
+define('_AM_MYCONFERENCE_CONFERENCESTITLE', "Conference's Title");
+define('_AM_MYCONFERENCE_ISDEFAULT', 'Is this the default one?');
+//2.00
+define('_AM_MYCONFERENCE_PICUPLOAD', "Speaker's Picture");
+define('_AM_MYCONFERENCE_CURRENT_PICTURE', 'Current Picture');
+define('_AM_MYCONFERENCE_PICTURE', 'Picture');
+define('_AM_MYCONFERENCE_IMAGEUPLOADED', 'Images uploaded successfully');
+define('_AM_MYCONFERENCE_IMAGE_NOT_UPLOADED', 'Error: Image was not uploaded');
+define('_AM_MYCONFERENCE_IMAGEMODIFIED', 'Image modified');
+define('_AM_MYCONFERENCE_IMAGENOTUPDATED', 'Image updated');
+define('_AM_MYCONFERENCE_FILENAMEEXISTS', 'File name already exists');
+define('_AM_MYCONFERENCE_DELCONFERENCE', 'Delete Conference');
+define('_AM_MYCONFERENCE_DELSECTION', 'Delete Section');
+define('_AM_MYCONFERENCE_DELTRACK', 'Delete Track');
+
+
+
+
+
+
+
+
+

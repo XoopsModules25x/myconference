@@ -24,28 +24,32 @@
  *           $block['content'] = The optional above content
  *           $options[1]   = How many reviews are displayes
  * Output  : Returns the desired most recent or most popular links
- ******************************************************************************/
-function b_myconference_show($options) {
-	global $xoopsDB;
-	$block = array();
-    $cid = "";
+ *****************************************************************************
+ * @param $options
+ * @return array
+ */
+function b_myconference_show($options)
+{
+    global $xoopsDB;
+    $block = array();
+    $cid   = '';
     if (empty($cid)) {
-        $rv = $xoopsDB->query("SELECT cid FROM ".$xoopsDB->prefix("myconference_main")." WHERE isdefault=1") or $eh->show("1001");
+        $rv = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1') OR $eh::show('1001');
         list($cid) = $xoopsDB->fetchRow($rv);
     }
-    $section['sid'] = 0;
-    $section['title'] = _MB_PROGRAM;
+    $section['sid']      = 0;
+    $section['title']    = _MB_MYCONFERENCE_PROGRAM;
     $block['sections'][] = $section;
-    $rv = $xoopsDB->query("SELECT sid, title FROM ".$xoopsDB->prefix("myconference_sections")." WHERE cid=$cid ORDER BY title");
-    while(list($sid,$title) = $xoopsDB->fetchRow($rv)) {
-        $section['sid'] = $sid;
-        $section['title'] = $title;
+    $rv                  = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE cid=$cid ORDER BY title");
+    while (list($sid, $title) = $xoopsDB->fetchRow($rv)) {
+        $section['sid']      = $sid;
+        $section['title']    = $title;
         $block['sections'][] = $section;
     }
-	return $block;
+
+    return $block;
 }
 
-
-function b_myconference_edit($options) {
+function b_myconference_edit($options)
+{
 }
-?>

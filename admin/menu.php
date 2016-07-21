@@ -18,14 +18,55 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA //
 // ------------------------------------------------------------------------- //
 
-$adminmenu[0]['title'] = _MI_MAIN;
-$adminmenu[0]['link'] = "admin/main.php";
-$adminmenu[1]['title'] = _MI_CVS;
-$adminmenu[1]['link'] = "admin/curriculums.php";
-$adminmenu[2]['title'] = _MI_SPEECHES;
-$adminmenu[2]['link'] = "admin/speeches.php";
-$adminmenu[3]['title'] = _MI_TRACKS;
-$adminmenu[3]['link'] = "admin/tracks.php";
-$adminmenu[4]['title'] = _MI_SECTIONS;
-$adminmenu[4]['link'] = "admin/sections.php";
-?>
+$moduleDirName = basename(dirname(__DIR__));
+
+$moduleHandler = xoops_getHandler('module');
+$module        = $moduleHandler->getByDirname($moduleDirName);
+$pathIcon32    = '../../' . $module->getInfo('sysicons32');
+$pathModIcon32 = './' . $module->getInfo('modicons32');
+xoops_loadLanguage('modinfo', $module->dirname());
+
+$xoopsModuleAdminPath = XOOPS_ROOT_PATH . '/' . $module->getInfo('dirmoduleadmin');
+include_once $xoopsModuleAdminPath . '/language/english/main.php';
+
+$adminmenu[] = array(
+    'title' => _AM_MODULEADMIN_HOME,
+    'link'  => 'admin/index.php',
+    'icon'  => $pathIcon32 . '/home.png'
+);
+
+$adminmenu[] = array(
+    'title' => _MI_MYCONFERENCE_MAIN,
+    'link'  => 'admin/main.php',
+    'icon'  => $pathIcon32 . '/manage.png'
+);
+
+$adminmenu[] = array(
+    'title' => _MI_MYCONFERENCE_BIOS,
+    'link'  => 'admin/bios.php',
+    'icon'  => $pathIcon32 . '/users.png'
+);
+
+$adminmenu[] = array(
+    'title' => _MI_MYCONFERENCE_SPEECHES,
+    'link'  => 'admin/speeches.php',
+    'icon'  => $pathIcon32 . '/face-smile.png'
+);
+
+$adminmenu[] = array(
+    'title' => _MI_MYCONFERENCE_TRACKS,
+    'link'  => 'admin/tracks.php',
+    'icon'  => $pathIcon32 . '/event.png'
+);
+
+$adminmenu[] = array(
+    'title' => _MI_MYCONFERENCE_SECTIONS,
+    'link'  => 'admin/sections.php',
+    'icon'  => $pathIcon32 . '/category.png'
+);
+
+$adminmenu[] = array(
+    'title' => _AM_MODULEADMIN_ABOUT,
+    'link'  => 'admin/about.php',
+    'icon'  => $pathIcon32 . '/about.png'
+);

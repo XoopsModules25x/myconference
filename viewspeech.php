@@ -18,39 +18,39 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA //
 // ------------------------------------------------------------------------- //
 
-include "header.php";
-$eh = new ErrorHandler; 
-$myts =& MyTextSanitizer::getInstance();
-$xoopsOption['template_main'] = 'myconference_speech.html';
+$xoopsOption['template_main'] = 'myconference_speech.tpl';
+include __DIR__ . '/header.php';
+$eh   = new ErrorHandler;
+$myts = MyTextSanitizer::getInstance();
 
-if (isset($HTTP_GET_VARS['sid'])) {
-    $sid = $HTTP_GET_VARS['sid'];
-} elseif (isset($HTTP_POST_VARS['sid'])) { 
-    $sid = $HTTP_POST_VARS['sid'];
+if (isset($_GET['sid'])) {
+    $sid = (int)$_GET['sid'];
+} elseif (isset($_POST['sid'])) {
+    $sid = (int)$_POST['sid'];
 }
 
 if (empty($sid)) {
-    $eh->show("0013");
+    $eh::show('0013');
 }
 
-$width=0;
-$xoopsTpl->assign('lang_speaker', _MA_SPEAKER);
-$xoopsTpl->assign('lang_date', _MA_DATE);
-$xoopsTpl->assign('lang_time', _MA_TIME);
-$xoopsTpl->assign('lang_duration', _MA_DURATION);
-$xoopsTpl->assign('lang_abstract', _MA_ABSTRACT);
-$labels = array(_MA_SPEAKER,_MA_DATE,_MA_TIME,_MA_DURATION,_MA_ABSTRACT);
+$width = 0;
+$xoopsTpl->assign('lang_speaker', _MD_MYCONFERENCE_SPEAKER);
+$xoopsTpl->assign('lang_date', _MD_MYCONFERENCE_DATE);
+$xoopsTpl->assign('lang_time', _MD_MYCONFERENCE_TIME);
+$xoopsTpl->assign('lang_duration', _MD_MYCONFERENCE_DURATION);
+$xoopsTpl->assign('lang_summary', _MD_MYCONFERENCE_SUMMARY);
+$labels = array(_MD_MYCONFERENCE_SPEAKER, _MD_MYCONFERENCE_DATE, _MD_MYCONFERENCE_TIME, _MD_MYCONFERENCE_DURATION, _MD_MYCONFERENCE_SUMMARY);
 foreach ($labels as $v) {
     $width = (strlen($v) > $width) ? strlen($v) : $width;
 }
 $xoopsTpl->assign('width', $width);
 
-$xoopsTpl->assign('lang_minutes', _MA_MINUTES);
-$rv = $xoopsDB->query("SELECT cid, title, cvid, stime, duration, abstract FROM ".$xoopsDB->prefix("myconference_speeches")." WHERE sid=$sid") or $eh->show("0013");
-list($cid, $stitle, $cvid, $stime, $duration, $abstract) = $xoopsDB->fetchRow($rv);
+$xoopsTpl->assign('lang_minutes', _MD_MYCONFERENCE_MINUTES);
+$rv = $xoopsDB->query('SELECT cid, title, cvid, stime, duration, summary FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid") OR $eh::show('0013');
+list($cid, $stitle, $cvid, $stime, $duration, $summary) = $xoopsDB->fetchRow($rv);
 $xoopsTpl->assign('stitle', $stitle);
 if (isset($cvid)) {
-    $rv = $xoopsDB->query("SELECT name FROM ".$xoopsDB->prefix("myconference_cvs")." WHERE cvid=$cvid") or $eh->show("0013");
+    $rv = $xoopsDB->query('SELECT name FROM ' . $xoopsDB->prefix('myconference_bios') . " WHERE cvid=$cvid") OR $eh::show('0013');
     list($sname) = $xoopsDB->fetchRow($rv);
     $xoopsTpl->assign('sname', $sname);
     $xoopsTpl->assign('cvid', $cvid);
@@ -58,25 +58,23 @@ if (isset($cvid)) {
 $xoopsTpl->assign('date', date('D, d M', $stime));
 $xoopsTpl->assign('stime', date('H:i', $stime));
 $xoopsTpl->assign('duration', $duration);
-$xoopsTpl->assign('abstract', $myts->displayTarea($abstract));
+$xoopsTpl->assign('summary', $myts->displayTarea($summary));
 
-$rv = $xoopsDB->query("SELECT title, subtitle, subsubtitle FROM ".$xoopsDB->prefix("myconference_main")." WHERE cid=$cid") or $eh->show("0013");
+$rv = $xoopsDB->query('SELECT title, subtitle, subsubtitle FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") OR $eh::show('0013');
 list($title, $subtitle, $subsubtitle) = $xoopsDB->fetchRow($rv);
 $xoopsTpl->assign('title', $title);
 $xoopsTpl->assign('subtitle', $subtitle);
 $xoopsTpl->assign('subsubtitle', $subsubtitle);
 
-$result = $xoopsDB->query("SELECT sid, title FROM ".$xoopsDB->prefix("myconference_sections")." WHERE cid=$cid ORDER BY title") or $eh->show("0013");
+$result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE cid=$cid ORDER BY title") OR $eh::show('0013');
 
 $count = 1;
-while($section = $xoopsDB->fetchArray($result)) {
+while ($section = $xoopsDB->fetchArray($result)) {
     $xoopsTpl->append('sections', array('id' => $section['sid'], 'title' => $section['title'], 'count' => $count));
-    $count++;
+    ++$count;
 }
 $xoopsTpl->assign('cid', $cid);
-$xoopsTpl->append('sections', array('id' => 0, 'title' => _MA_PROGRAM, 'count' => $count));
-$count++;
+$xoopsTpl->append('sections', array('id' => 0, 'title' => _MD_MYCONFERENCE_PROGRAM, 'count' => $count));
+++$count;
 
-include XOOPS_ROOT_PATH.'/footer.php';
-
-?>
+include XOOPS_ROOT_PATH . '/footer.php';

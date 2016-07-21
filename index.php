@@ -18,62 +18,74 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA //
 // ------------------------------------------------------------------------- //
 
-include "header.php";
-$eh = new ErrorHandler; 
-$myts =& MyTextSanitizer::getInstance();
-$xoopsOption['template_main'] = 'myconference_index.html';
+$xoopsOption['template_main'] = 'myconference_index.tpl';
+include __DIR__ . '/header.php';
+$eh   = new ErrorHandler;
+$myts = MyTextSanitizer::getInstance();
 
-//if (($HTTP_POST_VARS)) {
-//    foreach ( $HTTP_POST_VARS as $k => $v ) {
+//if (($_POST)) {
+//    foreach ($_POST as $k => $v) {
 //        echo "k ($k) = v ($v)<br>";
 //    }
 //}
 
-if (isset($HTTP_GET_VARS['cid'])) {
-    $cid = $HTTP_GET_VARS['cid'];
-} elseif (isset($HTTP_POST_VARS['cid'])) {
-    $cid = $HTTP_POST_VARS['cid'];
-} else {
-    $cid = "";
-}
+//if (isset($_GET['cid'])) {
+//    $cid = (int)$_GET['cid'];
+//} elseif (isset($_POST['cid'])) {
+//    $cid = (int)$_POST['cid'];
+//} else {
+//    $cid = '';
+//}
 
-if (empty($cid)) {
-    $result = $xoopsDB->query("SELECT cid FROM ".$xoopsDB->prefix("myconference_main")." WHERE isdefault=1") or $eh->show("1001");
-    list($cid) = $xoopsDB->fetchRow($result);
+//global $xoopsDB;
+
+$xoopsDB = XoopsDatabaseFactory::getDatabaseConnection();
+$cid     = XoopsRequest::getInt('cid', XoopsRequest::getInt('cid', 0, 'GET'), 'POST');
+
+if (0 === $cid) {
+    $result = $xoopsDB->queryF('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault = 1') OR $eh::show('1001');
+    if ($result) {
+        list($cid) = $xoopsDB->fetchRow($result);
+    }
 }
 
 if (empty($cid)) {
     xoops_header();
-    xoops_error(_MA_NOCONGRESS);
+    xoops_error(_MD_MYCONFERENCE_NOCONGRESS);
     xoops_footer();
     exit();
 }
-$result = $xoopsDB->query("SELECT title, subtitle, subsubtitle, abstract FROM ".$xoopsDB->prefix("myconference_main")." WHERE cid=$cid") or $eh->show("0013");
+$result = $xoopsDB->query('SELECT title, subtitle, subsubtitle, summary FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") OR $eh::show('0013');
 
-list($title, $subtitle, $subsubtitle, $abstract) = $xoopsDB->fetchRow($result);
+list($title, $subtitle, $subsubtitle, $summary) = $xoopsDB->fetchRow($result);
 
 $xoopsTpl->assign('title', $title);
 $xoopsTpl->assign('subtitle', $subtitle);
 $xoopsTpl->assign('subsubtitle', $subsubtitle);
 
-$result = $xoopsDB->query("SELECT sid, title FROM ".$xoopsDB->prefix("myconference_sections")." WHERE cid=$cid ORDER BY title") or $eh->show("0013");
+$result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE cid=$cid ORDER BY title") OR $eh::show('0013');
 
 $count = 1;
-while($section = $xoopsDB->fetchArray($result)) {
+while ($section = $xoopsDB->fetchArray($result)) {
     $xoopsTpl->append('sections', array('id' => $section['sid'], 'title' => $section['title'], 'count' => $count));
-    $count++;
+    ++$count;
 }
 $xoopsTpl->assign('cid', $cid);
-$xoopsTpl->append('sections', array('id' => 0, 'title' => _MA_PROGRAM, 'count' => $count));
-$count++;
+$xoopsTpl->append('sections', array('id' => 0, 'title' => _MD_MYCONFERENCE_PROGRAM, 'count' => $count));
+++$count;
 
-if (isset($HTTP_GET_VARS['sid'])) {
-    $result = $xoopsDB->query("SELECT abstract FROM ".$xoopsDB->prefix("myconference_sections")." WHERE sid=$sid") or $eh->show("0013");
-    list($abstract) = $xoopsDB->fetchRow($result);
+if (isset($_GET['sid'])) {
+    $sid = (int)$_GET['sid'];
+} elseif (isset($_POST['sid'])) {
+    $sid = (int)$_POST['sid'];
 }
 
-$xoopsTpl->append('sections', array('data' => $myts->displayTarea($abstract)));
+if (isset($_GET['sid'])) {
+    $result = $xoopsDB->query('SELECT summary FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE sid=$sid") OR $eh::show('0013');
+    list($summary) = $xoopsDB->fetchRow($result);
+}
 
-include XOOPS_ROOT_PATH.'/footer.php';
+$xoopsTpl->append('sections', array('data' => $myts->displayTarea($summary)));
 
-?>
+//include XOOPS_ROOT_PATH.'/footer.php';
+include $GLOBALS['xoops']->path('footer.php');

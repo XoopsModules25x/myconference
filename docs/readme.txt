@@ -3,7 +3,7 @@ myConference XOOPS' module
 Date: July/2004
 
 This module will help you organize a congress or conference.
-The idea is that you can add a congress, the tracks, the 
+The idea is that you can add a congress, the tracks, the
 speekers information and the speeches that they give. When
 all this information is entered in the database, the module
 will create a grid for you with all the information well organized.
@@ -21,17 +21,17 @@ Features:
 :Short explanation:
     First you need to add a congress/conference with start and end
 date.
-    A Congress (or conference) is the whole event, the grid will 
+    A Conference (or conference) is the whole event, the grid will
 only show the speeches that are between this conference start and
 end date. So be careful not to place a speech outside the congress'
 dates.
     A track is something used at congresses to organize the speeches,
 the idea is that a particular person won't have to face (at least too
 many times) the ``wannabe at two different speeches at the same time´´.
-So what you do is organize the speeches in thematic tracks (like: 
+So what you do is organize the speeches in thematic tracks (like:
 Programming, System Administration, Security, Documentation, Philosophy).
-The tracks are shown verticaly, throught all the congress, and you can't 
-have a speech that belongs to two different tracks (sorry, that's not 
+The tracks are shown verticaly, throught all the congress, and you can't
+have a speech that belongs to two different tracks (sorry, that's not
 implemented yet). So be carefull not to have too many tracks (4, maybe 5 at
 the most is recommended).
     There're also the sections, these are specificaly for congress information
