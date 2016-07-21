@@ -1,0 +1,8 @@
+In order to install the module, copy the myconference directoy to the
+XOOPS_ROOT/modules directory, and install it from the
+Administration->Modules->Install option.
+
+It currently supports MySQL database only.
+
+Daniel Coletti
+dcoletti@xtech.com.ar

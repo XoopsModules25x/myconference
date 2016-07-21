@@ -1,0 +1,36 @@
+<hr width=50% align='center'>
+<center>
+<font size=+1><b><{$title}></b></font><br>
+<b><i><{$subtitle}></i></b><br>
+<font size=+1><{$subsubtitle}></font><br>
+</center>
+<hr width=50% align='center'>
+<{if count($sections) gt 0}>
+    <table class='outer' border='0' cellspacing='5' cellpadding='0' align="center" width="100%">
+    <tr>
+<!-- Start sections loop -->
+    <{foreach item=section from=$sections}>
+        <{if $section.title}>
+            <{if $section.id == 0}>
+                <td class="itemHead" valign="top" ><a href="<{$xoops_url}>/modules/myconference/program.php?cid=<{$cid}>"><b><{$section.title}></b></a></td>
+            <{else}>
+                <td class="itemHead" valign="top" ><a href="<{$xoops_url}>/modules/myconference/index.php?sid=<{$section.id}>"><b><{$section.title}></b></a></td>
+            <{/if}>
+        <{/if}>
+        <{if $section.count is div by 5}>
+            </tr><tr>
+        <{/if}>
+    <{/foreach}>
+<!-- End sections loop -->
+    </tr>
+    </table>
+<{/if}>
+
+<br /><br />
+
+<i>
+<{$section.data}>
+</i>
+
+<br /><br />
+<{$sections.sponsors}>
