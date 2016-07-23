@@ -36,7 +36,7 @@ function b_myconference_show($options)
     $cid     = XoopsRequest::getInt('cid', XoopsRequest::getInt('cid', 0, 'GET'), 'POST');
 
     if (0 === $cid) {
-        $rv = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1') or $eh::show('1001');
+        $rv = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1');// or $eh::show('1001');
         list($cid) = $xoopsDB->fetchRow($rv);
     }
 

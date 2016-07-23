@@ -58,9 +58,9 @@ switch ($fct) {
         $summary     = XoopsRequest::getString('summary', '', 'POST');//$_POST['summary'];
         if ($isdefault) {
             // Since this is our default congress, we will update all the other congresses out there
-            $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . ' SET isdefault=0') or $eh::show('0013');
+            $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . ' SET isdefault=0');// or $eh::show('0013');
         }
-        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . " SET isdefault='$isdefault', title='$title', subtitle='$subtitle', subsubtitle='$subsubtitle', sdate='$sdate', edate='$edate', summary='$summary' WHERE cid=$cid") or $eh::show('0013');
+        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . " SET isdefault='$isdefault', title='$title', subtitle='$subtitle', subsubtitle='$subsubtitle', sdate='$sdate', edate='$edate', summary='$summary' WHERE cid=$cid");// or $eh::show('0013');
         if ($result) {
             redirect_header('main.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
@@ -72,7 +72,7 @@ switch ($fct) {
         $cid    = XoopsRequest::getInt('cid', 0, 'POST');//$_POST['cid'];
         if ($action === 'upd') {
             $cid = XoopsRequest::getInt('cid', 0, 'POST');//trim($_POST['cid']) or $eh::show('1001');
-            $result = $xoopsDB->query('SELECT isdefault,title,subtitle,subsubtitle,sdate,edate,summary FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") or $eh::show('0013');
+            $result = $xoopsDB->query('SELECT isdefault,title,subtitle,subsubtitle,sdate,edate,summary FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid");// or $eh::show('0013');
             list($isdefault_v, $title_v, $subtitle_v, $subsubtitle_v, $sdate_v, $edate_v, $summary_v) = $xoopsDB->fetchRow($result);
 
             $title       = new XoopsFormText(_AM_MYCONFERENCE_TITLE, 'title', 50, 200, $title_v);
@@ -112,7 +112,7 @@ switch ($fct) {
 
     case 'delconferenceok':
         $cid = XoopsRequest::getInt('cid', 0, 'POST');//trim($_POST['cid']) or $eh::show('1001');
-        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") or $eh::show('0013');
+        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid");// or $eh::show('0013');
         redirect_header('main.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         break;
 
@@ -130,9 +130,9 @@ switch ($fct) {
 
         if ($isdefault) {
             // Since this guy is our default congress, will update all the other congresses out there
-            $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . ' SET isdefault=0') or $eh::show('0013');
+            $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_main') . ' SET isdefault=0');// or $eh::show('0013');
         }
-        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_main') . " (isdefault,title,subtitle,subsubtitle,sdate,edate,summary) VALUES ('$isdefault','$title','$subtitle','$subsubtitle','$sdate','$edate','$summary')") or $eh::show('0013');
+        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_main') . " (isdefault,title,subtitle,subsubtitle,sdate,edate,summary) VALUES ('$isdefault','$title','$subtitle','$subsubtitle','$sdate','$edate','$summary')");// or $eh::show('0013');
         if ($result) {
             redirect_header('main.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
@@ -142,7 +142,7 @@ switch ($fct) {
         xoops_cp_header();
 
         // Get available conference for the Update/Delete form
-        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY title ASC') or $eh::show('0013');
+        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY title ASC');// or $eh::show('0013');
         $conference_select = new XoopsFormSelect(_AM_MYCONFERENCE_TITLE, 'cid');
         while (list($cid, $title) = $xoopsDB->fetchRow($result)) {
             $conference_select->addOption($cid, $title);

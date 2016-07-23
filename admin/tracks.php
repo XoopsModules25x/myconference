@@ -51,7 +51,7 @@ switch ($fct) {
         $cid     = XoopsRequest::getInt('cid', 0, 'POST');//$_POST['cid'];
         $title   = XoopsRequest::getString('title', '', 'POST');//$_POST['title'];
         $summary = XoopsRequest::getText('summary', '', 'POST');//$_POST['summary'];
-        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_tracks') . " SET title='$title', summary='$summary', cid='$cid' WHERE tid=$tid") or $eh::show('0013');
+        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_tracks') . " SET title='$title', summary='$summary', cid='$cid' WHERE tid=$tid");// or $eh::show('0013');
         if ($result) {
             redirect_header('tracks.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
@@ -64,11 +64,11 @@ switch ($fct) {
         $cid    = $cid     = XoopsRequest::getInt('cid', 0, 'POST');//$_POST['cid'];
         if ($action === 'upd') {
             $tid = XoopsRequest::getInt('tid', 0, 'POST');//trim($_POST['tid']) or $eh::show('1001');
-            $result = $xoopsDB->query('SELECT cid,title,summary FROM ' . $xoopsDB->prefix('myconference_tracks') . " WHERE tid=$tid") or $eh::show('0013');
+            $result = $xoopsDB->query('SELECT cid,title,summary FROM ' . $xoopsDB->prefix('myconference_tracks') . " WHERE tid=$tid");// or $eh::show('0013');
             list($cid_v, $title_v, $summary_v) = $xoopsDB->fetchRow($result);
 
             // Get the available congress
-            $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC') or $eh::show('0013');
+            $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC');// or $eh::show('0013');
             $cid_select = new XoopsFormSelect(_AM_MYCONFERENCE_CONFERENCESTITLE, 'cid', $cid_v);
             $cid_select->addOption(0, _AM_MYCONFERENCE_NONE);
             while (list($cid, $title) = $xoopsDB->fetchRow($result)) {
@@ -102,7 +102,7 @@ switch ($fct) {
 
     case 'deltrackok':
         $tid = XoopsRequest::getInt('tid', 0, 'POST');//trim($_POST['tid']) or $eh::show('1001');
-        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_tracks') . " WHERE tid=$tid") or $eh::show('0013');
+        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_tracks') . " WHERE tid=$tid");// or $eh::show('0013');
         redirect_header('tracks.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         break;
 
@@ -113,7 +113,7 @@ switch ($fct) {
 
         $eh = new ErrorHandler;
 
-        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_tracks') . " (cid, title, summary) VALUES ('$cid', '$title', '$summary')") or $eh::show('0013');
+        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_tracks') . " (cid, title, summary) VALUES ('$cid', '$title', '$summary')");// or $eh::show('0013');
 
         if ($result) {
             redirect_header('tracks.php', 2, _AM_MYCONFERENCE_DBUPDATED);
@@ -123,7 +123,7 @@ switch ($fct) {
     default:
         xoops_cp_header();
         // Get available tracks for the Update/Delete form
-        $result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . ' ORDER BY title ASC') or $eh::show('0013');
+        $result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . ' ORDER BY title ASC');// or $eh::show('0013');
         $track_select = new XoopsFormSelect(_AM_MYCONFERENCE_TITLE, 'tid');
         while (list($tid, $title) = $xoopsDB->fetchRow($result)) {
             $track_select->addOption($tid, $title);
@@ -148,7 +148,7 @@ switch ($fct) {
         $submit_button = new XoopsFormButton('', 'submit', _AM_MYCONFERENCE_ADD, 'submit');
 
         // Get the available congress
-        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC') or $eh::show('0013');
+        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC');// or $eh::show('0013');
         $cid_select = new XoopsFormSelect(_AM_MYCONFERENCE_CONFERENCESTITLE, 'cid', $cid_v);
         $cid_select->addOption(0, _AM_MYCONFERENCE_NONE);
         while (list($cid, $cid_title) = $xoopsDB->fetchRow($result)) {

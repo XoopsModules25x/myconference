@@ -21,7 +21,7 @@
 include __DIR__ . '/header.php';
 $xoopsOption['template_main'] = 'myconference_speech.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
-$eh   = new ErrorHandler;
+//$eh   = new ErrorHandler;
 $myts = MyTextSanitizer::getInstance();
 
 //if (isset($_GET['sid'])) {
@@ -32,9 +32,9 @@ $myts = MyTextSanitizer::getInstance();
 
 $sid     = XoopsRequest::getInt('sid', XoopsRequest::getInt('sid', 0, 'GET'), 'POST');
 
-if (empty($sid)) {
-    $eh::show('0013');
-}
+//if (empty($sid)) {
+//    $eh::show('0013');
+//}
 
 $width = 0;
 $xoopsTpl->assign('lang_speaker', _MD_MYCONFERENCE_SPEAKER);
@@ -49,11 +49,11 @@ foreach ($labels as $v) {
 $xoopsTpl->assign('width', $width);
 
 $xoopsTpl->assign('lang_minutes', _MD_MYCONFERENCE_MINUTES);
-$rv = $xoopsDB->query('SELECT cid, title, speakerid, stime, duration, summary FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid") or $eh::show('0013');
+$rv = $xoopsDB->query('SELECT cid, title, speakerid, stime, duration, summary FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid");// or $eh::show('0013');
 list($cid, $stitle, $speakerid, $stime, $duration, $summary) = $xoopsDB->fetchRow($rv);
 $xoopsTpl->assign('stitle', $stitle);
 if (isset($speakerid)) {
-    $rv = $xoopsDB->query('SELECT name FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid") or $eh::show('0013');
+    $rv = $xoopsDB->query('SELECT name FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid");// or $eh::show('0013');
     list($sname) = $xoopsDB->fetchRow($rv);
     $xoopsTpl->assign('sname', $sname);
     $xoopsTpl->assign('speakerid', $speakerid);
@@ -63,13 +63,13 @@ $xoopsTpl->assign('stime', date('H:i', $stime));
 $xoopsTpl->assign('duration', $duration);
 $xoopsTpl->assign('summary', $myts->displayTarea($summary));
 
-$rv = $xoopsDB->query('SELECT title, subtitle, subsubtitle FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") or $eh::show('0013');
+$rv = $xoopsDB->query('SELECT title, subtitle, subsubtitle FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid");// or $eh::show('0013');
 list($title, $subtitle, $subsubtitle) = $xoopsDB->fetchRow($rv);
 $xoopsTpl->assign('title', $title);
 $xoopsTpl->assign('subtitle', $subtitle);
 $xoopsTpl->assign('subsubtitle', $subsubtitle);
 
-$result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE cid=$cid ORDER BY title") or $eh::show('0013');
+$result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE cid=$cid ORDER BY title");// or $eh::show('0013');
 
 $count = 1;
 while ($section = $xoopsDB->fetchArray($result)) {
