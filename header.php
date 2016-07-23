@@ -18,13 +18,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA //
 // ------------------------------------------------------------------------- //
 
+include dirname(dirname(__DIR__)) . '/mainfile.php';
+include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+include_once XOOPS_ROOT_PATH . '/kernel/module.php';
+include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+include_once __DIR__ . '/class/utilities.php';
 
-include "../../mainfile.php";
-include XOOPS_ROOT_PATH."/header.php";
-include_once XOOPS_ROOT_PATH."/class/xoopsformloader.php";
-include_once XOOPS_ROOT_PATH."/class/xoopsmodule.php";
-include_once XOOPS_ROOT_PATH."/class/module.errorhandler.php";
+xoops_load('XoopsRequest');
 
-xoops_header();
-
-?>

@@ -19,49 +19,54 @@
 // ------------------------------------------------------------------------- //
 
 include __DIR__ . '/header.php';
-$xoopsOption['template_main'] = 'myconference_speech.tpl';
+$xoopsOption['template_main'] = 'myconference_speaker.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 $eh   = new ErrorHandler;
 $myts = MyTextSanitizer::getInstance();
 
-//if (isset($_GET['sid'])) {
-//    $sid = (int)$_GET['sid'];
-//} elseif (isset($_POST['sid'])) {
-//    $sid = (int)$_POST['sid'];
+//if (isset($_GET['speakerid'])) {
+//    $speakerid = (int)$_GET['speakerid'];
+//} elseif (isset($_POST['speakerid'])) {
+//    $speakerid = (int)$_POST['speakerid'];
 //}
 
-$sid     = XoopsRequest::getInt('sid', XoopsRequest::getInt('sid', 0, 'GET'), 'POST');
+$speakerid = XoopsRequest::getInt('speakerid', XoopsRequest::getInt('speakerid', 0, 'GET'), 'POST');
 
-if (empty($sid)) {
+if (0 === $speakerid) {
     $eh::show('0013');
 }
 
 $width = 0;
-$xoopsTpl->assign('lang_speaker', _MD_MYCONFERENCE_SPEAKER);
-$xoopsTpl->assign('lang_date', _MD_MYCONFERENCE_DATE);
-$xoopsTpl->assign('lang_time', _MD_MYCONFERENCE_TIME);
-$xoopsTpl->assign('lang_duration', _MD_MYCONFERENCE_DURATION);
-$xoopsTpl->assign('lang_summary', _MD_MYCONFERENCE_SUMMARY);
-$labels = array(_MD_MYCONFERENCE_SPEAKER, _MD_MYCONFERENCE_DATE, _MD_MYCONFERENCE_TIME, _MD_MYCONFERENCE_DURATION, _MD_MYCONFERENCE_SUMMARY);
+$xoopsTpl->assign('lang_name', _MD_MYCONFERENCE_NAME);
+$xoopsTpl->assign('lang_email', _MD_MYCONFERENCE_EMAIL);
+$xoopsTpl->assign('lang_url', _MD_MYCONFERENCE_URL);
+$xoopsTpl->assign('lang_picture', _MD_MYCONFERENCE_PICTURE);
+$xoopsTpl->assign('lang_company', _MD_MYCONFERENCE_COMPANY);
+$xoopsTpl->assign('lang_location', _MD_MYCONFERENCE_LOCATION);
+$xoopsTpl->assign('lang_minibio', _MD_MYCONFERENCE_MINI_BIO);
+$labels = array(_MD_MYCONFERENCE_NAME, _MD_MYCONFERENCE_EMAIL, _MD_MYCONFERENCE_URL, _MD_MYCONFERENCE_PICTURE, _MD_MYCONFERENCE_COMPANY, _MD_MYCONFERENCE_LOCATION, _MD_MYCONFERENCE_MINI_BIO);
 foreach ($labels as $v) {
     $width = (strlen($v) > $width) ? strlen($v) : $width;
 }
 $xoopsTpl->assign('width', $width);
+$uploadirectory =  'uploads/' . MYCONFERENCE_DIRNAME .'/images';
 
-$xoopsTpl->assign('lang_minutes', _MD_MYCONFERENCE_MINUTES);
-$rv = $xoopsDB->query('SELECT cid, title, speakerid, stime, duration, summary FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid") or $eh::show('0013');
-list($cid, $stitle, $speakerid, $stime, $duration, $summary) = $xoopsDB->fetchRow($rv);
-$xoopsTpl->assign('stitle', $stitle);
-if (isset($speakerid)) {
-    $rv = $xoopsDB->query('SELECT name FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid") or $eh::show('0013');
-    list($sname) = $xoopsDB->fetchRow($rv);
-    $xoopsTpl->assign('sname', $sname);
-    $xoopsTpl->assign('speakerid', $speakerid);
+$rv = $xoopsDB->query('SELECT name, email, descrip, location, company, photo, url FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid") or $eh::show('0013');
+list($sname, $semail, $sminibio, $slocation, $scompany, $sphoto, $surl) = $xoopsDB->fetchRow($rv);
+$xoopsTpl->assign('sname', $sname);
+$xoopsTpl->assign('semail', $semail);
+$xoopsTpl->assign('surl', $surl);
+$xoopsTpl->assign('sphoto', $uploadirectory .'/' . $sphoto);
+$xoopsTpl->assign('scompany', $scompany);
+$xoopsTpl->assign('slocation', $slocation);
+$xoopsTpl->assign('sminibio', $myts->displayTarea($sminibio));
+
+
+$cid     = XoopsRequest::getInt('cid', XoopsRequest::getInt('cid', 0, 'GET'), 'POST');
+if (0 === $cid) {
+    $result = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1') or $eh::show('1001');
+    list($cid) = $xoopsDB->fetchRow($result);
 }
-$xoopsTpl->assign('date', date('D, d M', $stime));
-$xoopsTpl->assign('stime', date('H:i', $stime));
-$xoopsTpl->assign('duration', $duration);
-$xoopsTpl->assign('summary', $myts->displayTarea($summary));
 
 $rv = $xoopsDB->query('SELECT title, subtitle, subsubtitle FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid") or $eh::show('0013');
 list($title, $subtitle, $subsubtitle) = $xoopsDB->fetchRow($rv);

@@ -20,11 +20,12 @@
 
 function getFile($file)
 {
-    include_once XOOPS_ROOT_PATH.'/class/uploader.php';
-    $mimetypes = array('image/gif', 
-        'image/jpeg', 
-        'image/pjpeg', 
-        'image/x-png', 
+    include_once XOOPS_ROOT_PATH . '/class/uploader.php';
+    $mimetypes = array(
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/x-png',
         'image/png',
         'text/html',
         'text/plain',
@@ -60,9 +61,10 @@ function getFile($file)
         'application/ogg',
         'application/x-gtar',
         'application/x-dvi',
-        'audio/mpeg');
+        'audio/mpeg'
+    );
 
-    $uploader = new XoopsMediaUploader(XOOPS_UPLOAD_PATH, $mimetypes, 50000, 500, 500);
+    $uploader = new XoopsMediaUploader(MYCONFERENCE_UPLOAD_PATH .'/images' , $mimetypes, 1000000, 1000, 1000);
     $uploader->setPrefix('cnfr');
     if ($uploader->fetchMedia($file)) {
         if (!$uploader->upload()) {
@@ -79,68 +81,33 @@ function getFile($file)
         xoops_cp_footer();
         exit();
     }
+
     return $file;
 }
 
-function showAdmin($header=0)
+function XoopsFormDateTimeI($caption, $name, $size = 15, $value = 0, $interval = 10)
 {
-    $functions = array("main","curriculums","speeches","tracks","sections");
-    if ($header) {
-        xoops_cp_header();
-    }
-    echo '<table align="center" class="outer" cellpadding="4" cellspacing="1">';
-    echo '<tr>';
-	$counter = 0;
-    $class = 'even';
-    while ($f = array_shift($functions)) {
-        echo "<td class='$class' align='center' valign='bottom'>";
-        echo "<a href='".XOOPS_URL."/modules/myconference/admin/".$f.".php'><b> $f </b></a>\n";
-        echo "</td>";
-        $counter++;
-        $class = ($class == 'even') ? 'odd' : 'even';
-        if ( $counter > 4 ) {
-            $counter = 0;
-            echo "</tr>";
-            echo "<tr>";
-        }
-    }
-	while ($counter < 4) {
-		echo '<td class="'.$class.'">&nbsp;</td>';
-		$class = ($class == 'even') ? 'odd' : 'even';
-		$counter++;
-	}
-	echo '</tr></table>';
-	echo '<br><br>';
-        
-    if ($header) {
-        xoops_cp_footer();
-    }
-}
-
-function XoopsFormDateTimeI($caption, $name, $size = 15, $value=0, $interval=10)
-{
-    $fe = new XoopsFormElementTray($caption, '&nbsp;');
-    $value = intval($value);
-    $interval = intval($interval);
-    $value = ($value > 0) ? $value : time();
-    $datetime = getDate($value);
-    $fe->addElement(new XoopsFormTextDateSelect('', $name.'[date]', $size, $value));
+    $fe       = new XoopsFormElementTray($caption, '&nbsp;');
+    $value    = (int)$value;
+    $interval = (int)$interval;
+    $value    = ($value > 0) ? $value : time();
+    $datetime = getdate($value);
+    $fe->addElement(new XoopsFormTextDateSelect('', $name . '[date]', $size, $value));
     $timearray = array();
-    for ($i = 0; $i < 24; $i++) {
-        for ($j = 0; $j < 60; $j = $j + $interval) {
-            $key = ($i * 3600) + ($j * 60);
-            $timearray[$key] = ($j != 0) ? $i.':'.$j : $i.':0'.$j;
+    for ($i = 0; $i < 24; ++$i) {
+        for ($j = 0; $j < 60; $j += $interval) {
+            $key             = ($i * 3600) + ($j * 60);
+            $timearray[$key] = ($j != 0) ? $i . ':' . $j : $i . ':0' . $j;
         }
     }
     ksort($timearray);
-    $timeselect = new XoopsFormSelect('', $name.'[time]', $datetime['hours'] * 3600 + 600 * ceil($datetime['minutes'] / 10));
+    $timeselect = new XoopsFormSelect('', $name . '[time]', $datetime['hours'] * 3600 + 600 * ceil($datetime['minutes'] / 10));
     $timeselect->addOptionArray($timearray);
     $fe->addElement($timeselect);
+
     return $fe;
 }
 
 function showSection($section)
 {
 }
-
-?>

@@ -19,30 +19,45 @@
 // ------------------------------------------------------------------------- //
 
 // The name of this module
-define("_MI_NAME","Conferences");
+define('_MI_MYCONFERENCE_NAME', 'Conferences');
 
 // A brief description of this module
-define("_MI_DESC","Creates all the necessary web pages that any Conference Event must have.");
+define('_MI_MYCONFERENCE_DESC', 'Creates all the necessary web pages that any Conference Event must have.');
 
 // Names of blocks for this module (Not all module has blocks)
-define("_MI_BNAME","Conferences");
+define('_MI_MYCONFERENCE_BNAME', 'Conferences');
 
 // Sub menu titles
-define("_MI_MAIN","Main");
-define("_MI_CVS","Curriculums");
-define("_MI_SPEECHES","Speeches");
-define("_MI_TRACKS","Tracks");
-define("_MI_SECTIONS","Sections");
+define('_MI_MYCONFERENCE_MAIN', 'Main');
+define('_MI_MYCONFERENCE_SPEAKERS', 'Speakers');
+define('_MI_MYCONFERENCE_SPEECHES', 'Speeches');
+define('_MI_MYCONFERENCE_TRACKS', 'Tracks');
+define('_MI_MYCONFERENCE_SECTIONS', 'Sections');
 
 // Templates
-define("_MI_EDITCVFORMDESCR","CV's edit form");
-define("_MI_ADDCVFORMDESCR","CV's add form");
+define('_MI_MYCONFERENCE_EDIT_SPEAKER_FORM_DESCR', 'Speaker edit form');
+define('_MI_MYCONFERENCE_ADD_SPEAKER_FORM_DESCR', 'Speaker add form');
 
 // Names of admin menu items
-define("_MI_ADMENU2","Add/Edit Links");
-define("_MI_ADMENU3","Submitted Links");
-define("_MI_ADMENU4","Broken Links");
-define("_MI_ADMENU5","Modified Links");
-define("_MI_ADMENU6","Link Checker");
+define('_MI_MYCONFERENCE_ADMENU2', 'Add/Edit Links');
+define('_MI_MYCONFERENCE_ADMENU3', 'Submitted Links');
+define('_MI_MYCONFERENCE_ADMENU4', 'Broken Links');
+define('_MI_MYCONFERENCE_ADMENU5', 'Modified Links');
+define('_MI_MYCONFERENCE_ADMENU6', 'Link Checker');
 
-?>
+//2.00
+
+define('_MI_MYCONFERENCE_MAX_HEIGHT', 'Max Height');
+define('_MI_MYCONFERENCE_MAX_HEIGHT_DESC', 'Max Height of the uploaded image/picture');
+define('_MI_MYCONFERENCE_MAX_WIDTH', 'Max Width');
+define('_MI_MYCONFERENCE_MAX_WIDTH_DESC', 'Max Width of the uploaded image/picture');
+define('_MI_MYCONFERENCE_MAX_SIZE', 'Max Size');
+define('_MI_MYCONFERENCE_MAX_SIZE_DESC', 'Max size of the uploaded image/picture file in Bytes');
+define('_MI_MYCONFERENCE_PICS_UPLOAD_DIR', 'Upload Directory');
+define('_MI_MYCONFERENCE_PICS_UPLOAD_DIR_DESC', 'This is where your pictures will be saved');
+
+//Help
+define('_MI_MYCONFERENCE_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_MYCONFERENCE_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_MYCONFERENCE_BACK_2_ADMIN', 'Back to Administration of ');
+define('_MI_MYCONFERENCE_HELP_OVERVIEW', 'Overview');
