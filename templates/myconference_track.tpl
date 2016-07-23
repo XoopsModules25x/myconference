@@ -6,25 +6,25 @@
 </div>
 <hr width=50% align='center'>
 <{if count($sections) gt 0}>
-<table class='outer' border='0' cellspacing='5' cellpadding='0' align="center" width="100%">
-    <tr>
-        <!-- Start sections loop -->
-        <{foreach item=section from=$sections}>
-        <{if $section.title}>
-        <{if $section.id == 0}>
-        <td class="itemHead" valign="top"><a href="<{$xoops_url}>/modules/myconference/program.php?cid=<{$cid}>"><b><{$section.title}></b></a></td>
-        <{else}>
-        <td class="itemHead" valign="top"><a href="<{$xoops_url}>/modules/myconference/index.php?sid=<{$section.id}>"><b><{$section.title}></b></a></td>
-        <{/if}>
-        <{/if}>
-        <{if $section.count is div by 5}>
-    </tr>
-    <tr>
-        <{/if}>
-        <{/foreach}>
-        <!-- End sections loop -->
-    </tr>
-</table>
+    <table class='outer' border='0' cellspacing='5' cellpadding='0' align="center" width="100%">
+        <tr>
+            <!-- Start sections loop -->
+            <{foreach item=section from=$sections}>
+            <{if $section.title}>
+                <{if $section.id == 0}>
+                    <td class="itemHead" valign="top"><a href="<{$xoops_url}>/modules/myconference/program.php?cid=<{$cid}>"><b><{$section.title}></b></a></td>
+                <{else}>
+                    <td class="itemHead" valign="top"><a href="<{$xoops_url}>/modules/myconference/index.php?sid=<{$section.id}>"><b><{$section.title}></b></a></td>
+                <{/if}>
+            <{/if}>
+            <{if $section.count % 5 == 0}>
+        </tr>
+        <tr>
+            <{/if}>
+            <{/foreach}>
+            <!-- End sections loop -->
+        </tr>
+    </table>
 <{/if}>
 <table class='outer' border='0' cellspacing='5' cellpadding='0' align="center" width="100%">
     <tr>

@@ -1,41 +1,41 @@
 ## db ##
 #Tablas: 
-#    - conference_bios
+#    - conference_speakers
 #    - conference_speech_type
 #    - conference_speech
 #    - conference_tracks
 #    - conference_sponsors
 #    - conference_speech_eval
 
-CREATE TABLE myconference_bios (
-  cvid     INT(5)      NOT NULL AUTO_INCREMENT,
-  name     VARCHAR(80) NOT NULL DEFAULT '' UNIQUE,
-  email    VARCHAR(100)         DEFAULT '',
-  descrip  MEDIUMTEXT,
-  location VARCHAR(100),
-  company  VARCHAR(100)         DEFAULT '',
-  photo    VARCHAR(200),
-  url      VARCHAR(200),
-  hits     INT(5)               DEFAULT 0,
-  PRIMARY KEY (cvid, name)
+CREATE TABLE myconference_speakers (
+  speakerid INT(5)      NOT NULL AUTO_INCREMENT,
+  name      VARCHAR(80) NOT NULL DEFAULT '' UNIQUE,
+  email     VARCHAR(100)         DEFAULT '',
+  descrip   MEDIUMTEXT,
+  location  VARCHAR(100),
+  company   VARCHAR(100)         DEFAULT '',
+  photo     VARCHAR(200),
+  url       VARCHAR(200),
+  hits      INT(5)               DEFAULT 0,
+  PRIMARY KEY (speakerid, name)
 )
   ENGINE = MyISAM;
 
 CREATE TABLE myconference_speeches (
-  sid      INT(5)       NOT NULL AUTO_INCREMENT,
-  stid     TINYINT               DEFAULT 1,
-  title    VARCHAR(120) NOT NULL DEFAULT '' UNIQUE,
-  summary  MEDIUMTEXT,
-  stime    INT(10),
-  etime    INT(10),
-  duration INT,
-  cvid     INT(5)       NOT NULL,
-  cid      TINYINT,
-  tid      TINYINT,
-  slides1  VARCHAR(200),
-  slides2  VARCHAR(200),
-  slides3  VARCHAR(200),
-  slides4  VARCHAR(200),
+  sid       INT(5)       NOT NULL AUTO_INCREMENT,
+  stid      TINYINT               DEFAULT 1,
+  title     VARCHAR(120) NOT NULL DEFAULT '' UNIQUE,
+  summary   MEDIUMTEXT,
+  stime     INT(10),
+  etime     INT(10),
+  duration  INT,
+  speakerid INT(5)       NOT NULL,
+  cid       TINYINT,
+  tid       TINYINT,
+  slides1   VARCHAR(200),
+  slides2   VARCHAR(200),
+  slides3   VARCHAR(200),
+  slides4   VARCHAR(200),
   PRIMARY KEY (sid, title)
 )
   ENGINE = MyISAM;

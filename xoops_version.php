@@ -56,7 +56,7 @@ $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 //$modversion['sqlfile']['postgresql'] = "sql/pgsql.sql";
 
 // Tables created by sql file (without prefix!)
-$modversion['tables'][0] = 'myconference_bios';
+$modversion['tables'][0] = 'myconference_speakers';
 $modversion['tables'][1] = 'myconference_speeches';
 $modversion['tables'][2] = 'myconference_speech_types';
 $modversion['tables'][3] = 'myconference_tracks';
@@ -91,7 +91,7 @@ $modversion['templates'][2]['file']        = 'myconference_speech.tpl';
 $modversion['templates'][2]['description'] = 'Speech\'s info page';
 $modversion['templates'][3]['file']        = 'myconference_track.tpl';
 $modversion['templates'][3]['description'] = 'Track\'s info page';
-$modversion['templates'][4]['file']        = 'myconference_bios.tpl';
+$modversion['templates'][4]['file']        = 'myconference_speaker.tpl';
 $modversion['templates'][4]['description'] = 'Speaker\'s info page';
 
 // ********************************************************************************************************************
@@ -102,25 +102,25 @@ $modversion['config'][1]['title']       = '_MI_MYCONFERENCE_MAX_HEIGHT';
 $modversion['config'][1]['description'] = '_MI_MYCONFERENCE_MAX_HEIGHT_DESC';
 $modversion['config'][1]['formtype']    = 'textbox';
 $modversion['config'][1]['valuetype']   = 'int';
-$modversion['config'][1]['default']     = '110';
+$modversion['config'][1]['default']     = '800';
 
 $modversion['config'][2]['name']        = 'max_imgwidth';
 $modversion['config'][2]['title']       = '_MI_MYCONFERENCE_MAX_WIDTH';
 $modversion['config'][2]['description'] = '_MI_MYCONFERENCE_MAX_WIDTH_DESC';
 $modversion['config'][2]['formtype']    = 'textbox';
 $modversion['config'][2]['valuetype']   = 'int';
-$modversion['config'][2]['default']     = '130';
+$modversion['config'][2]['default']     = '1200';
 
 $modversion['config'][3]['name']        = 'max_imgsize';
 $modversion['config'][3]['title']       = '_MI_MYCONFERENCE_MAX_SIZE';
 $modversion['config'][3]['description'] = '_MI_MYCONFERENCE_MAX_SIZE_DESC';
 $modversion['config'][3]['formtype']    = 'textbox';
 $modversion['config'][3]['valuetype']   = 'int';
-$modversion['config'][3]['default']     = '10000';
+$modversion['config'][3]['default']     = '1000000';
 
 $modversion['config'][4]['name']        = 'picsULdir';
-$modversion['config'][4]['title']       = '_MI_MYCONFERENCE_FM_PICSULDIR';
-$modversion['config'][4]['description'] = '_MI_MYCONFERENCE_FM_PICSULDIR_DESC';
+$modversion['config'][4]['title']       = '_MI_MYCONFERENCE_PICS_UPLOAD_DIR';
+$modversion['config'][4]['description'] = '_MI_MYCONFERENCE_PICS_UPLOAD_DIR_DESC';
 $modversion['config'][4]['formtype']    = 'textbox';
 $modversion['config'][4]['valuetype']   = 'text';
-$modversion['config'][4]['default']     = 'modules/myconference/images/pictures';
+$modversion['config'][4]['default']     = 'myconference/images';

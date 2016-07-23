@@ -64,7 +64,7 @@ function getFile($file)
         'audio/mpeg'
     );
 
-    $uploader = new XoopsMediaUploader(XOOPS_UPLOAD_PATH, $mimetypes, 50000, 500, 500);
+    $uploader = new XoopsMediaUploader(MYCONFERENCE_UPLOAD_PATH .'/images' , $mimetypes, 1000000, 1000, 1000);
     $uploader->setPrefix('cnfr');
     if ($uploader->fetchMedia($file)) {
         if (!$uploader->upload()) {

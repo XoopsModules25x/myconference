@@ -31,10 +31,10 @@ define('_MD_MYCONFERENCE_PROGRAM', 'Program');
 define('_MD_MYCONFERENCE_NOCONGRESS', "There's no congress in the database.<br> Please start by creating at least one congress and marking it as the default congress (at the administration section)");
 
 // 14/7/2004
-define('_MD_MYCONFERENCE_NAME', 'Name');
-define('_MD_MYCONFERENCE_EMAIL', 'Email address');
-define('_MD_MYCONFERENCE_URL', 'URL');
-define('_MD_MYCONFERENCE_PICTURE', 'Picture');
-define('_MD_MYCONFERENCE_COMPANY', 'Company');
-define('_MD_MYCONFERENCE_LOCATION', 'Location');
-define('_MD_MYCONFERENCE_MINICV', 'Mini Bio');
+define('_MD_MYCONFERENCE_NAME', 'Name:');
+define('_MD_MYCONFERENCE_EMAIL', 'Email address:');
+define('_MD_MYCONFERENCE_URL', 'URL:');
+define('_MD_MYCONFERENCE_PICTURE', 'Picture:');
+define('_MD_MYCONFERENCE_COMPANY', 'Company:');
+define('_MD_MYCONFERENCE_LOCATION', 'Location:');
+define('_MD_MYCONFERENCE_MINI_BIO', 'Bio:');

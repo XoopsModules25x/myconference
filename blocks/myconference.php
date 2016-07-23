@@ -31,12 +31,16 @@
 function b_myconference_show($options)
 {
     global $xoopsDB;
+    xoops_load('XoopsRequest');
     $block = array();
-    $cid   = '';
-    if (empty($cid)) {
-        $rv = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1') OR $eh::show('1001');
+    $cid     = XoopsRequest::getInt('cid', XoopsRequest::getInt('cid', 0, 'GET'), 'POST');
+
+    if (0 === $cid) {
+        $rv = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1') or $eh::show('1001');
         list($cid) = $xoopsDB->fetchRow($rv);
     }
+
+    if ($cid > 0) {
     $section['sid']      = 0;
     $section['title']    = _MB_MYCONFERENCE_PROGRAM;
     $block['sections'][] = $section;
@@ -46,7 +50,7 @@ function b_myconference_show($options)
         $section['title']    = $title;
         $block['sections'][] = $section;
     }
-
+    }
     return $block;
 }
 

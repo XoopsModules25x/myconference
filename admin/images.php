@@ -9,7 +9,7 @@
  */
 
 // Includes
-include('admin_header.php');
+include __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
 

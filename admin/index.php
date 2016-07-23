@@ -17,10 +17,17 @@
  */
 
 include_once __DIR__ . '/admin_header.php';
+include_once dirname(__DIR__) . '/class/utilities.php';
 // Display Admin header
 xoops_cp_header();
 
 $indexAdmin = new ModuleAdmin();
+
+foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
+    MyconferenceUtilities::prepareFolder($uploadFolders[$i]);
+    $indexAdmin->addConfigBoxLine($uploadFolders[$i], 'folder');
+    //    $indexAdmin->addConfigBoxLine(array($folder[$i], '777'), 'chmod');
+}
 
 echo $indexAdmin->addNavigation(basename(__FILE__));
 echo $indexAdmin->renderIndex();

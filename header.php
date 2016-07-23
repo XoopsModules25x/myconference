@@ -19,10 +19,10 @@
 // ------------------------------------------------------------------------- //
 
 include dirname(dirname(__DIR__)) . '/mainfile.php';
-include XOOPS_ROOT_PATH . '/header.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 include_once XOOPS_ROOT_PATH . '/kernel/module.php';
 include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+include_once __DIR__ . '/class/utilities.php';
 
 xoops_load('XoopsRequest');
 

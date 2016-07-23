@@ -1,4 +1,5 @@
 INSTALL/UNISTALL
+=====================
 
 In order to install the module, copy the myconference directoy to the
 XOOPS_ROOT/modules directory, and install it from the

@@ -24,50 +24,60 @@ include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 
 $eh = new ErrorHandler;
 
-if (isset($_POST['fct'])) {
-    $fct = trim($_POST['fct']);
-}
-if (isset($_GET['fct'])) {
-    $fct = trim($_GET['fct']);
-}
+//if (isset($_POST['fct'])) {
+//    $fct = trim($_POST['fct']);
+//}
+//if (isset($_GET['fct'])) {
+//    $fct = trim($_GET['fct']);
+//}
+//
+//if (!isset($fct)) {
+//    $fct = '';
+//}
 
-if (!isset($fct)) {
-    $fct = '';
-}
+$fct = XoopsRequest::getString('fct', XoopsRequest::getString('fct', '', 'GET'), 'POST');
 
 switch ($fct) {
     case 'updspeech':
         $eh      = new ErrorHandler;
-        $title   = $_POST['title'];
-        $summary = $_POST['summary'];
-        $stime   = $_POST['stime'];
+        $title   = XoopsRequest::getString('title', '', 'POST');//$_POST['title'];
+        $summary = XoopsRequest::getText('summary', '', 'POST');//$_POST['summary'];
+        $stime   = XoopsRequest::getText('stime', '', 'POST');//$_POST['stime'];
         $date    = strtotime(array_shift($stime));
         $date += array_shift($stime);
-        $stime    = $date;
-        $cvid     = (int)$_POST['cvid'];
-        $cid      = (int)$_POST['cid'];
-        $tid      = (int)$_POST['tid'];
-        $duration = $_POST['duration'];
-        $etime    = $stime + $duration * 60;
-        if (isset($_POST['xoops_upload_file'][0]) && !empty($_POST['slides1'])) {
-            $slides1 = $_POST['xoops_upload_file'][0];
+        $stime     = $date;
+        $speakerid = XoopsRequest::getInt('speakerid', 0, 'POST');//(int)$_POST['speakerid'];
+        $cid       = XoopsRequest::getInt('cid', 0, 'POST');//$_POST['cid'];
+        $tid       = XoopsRequest::getInt('tid', 0, 'POST');//(int)$_POST['tid'];
+        $duration  = XoopsRequest::getInt('duration', 0, 'POST');//$_POST['duration'];
+        $etime     = $stime + $duration * 60;
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[0]) //$_POST['xoops_upload_file'][0])
+            && !empty(XoopsRequest::getString('slides1', null, 'POST')) //$_POST['slides1'])
+        ) {
+            $slides1 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[0]; //$_POST['xoops_upload_file'][0];
             $slides1 = getFile($slides1);
         }
-        if (isset($_POST['xoops_upload_file'][1]) && !empty($_POST['slides2'])) {
-            $slides2 = $_POST['xoops_upload_file'][1];
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[1]) //$_POST['xoops_upload_file'][1])
+            && !empty(XoopsRequest::getString('slides2', null, 'POST')) //$_POST['slides2'])
+        ) {
+            $slides2 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[1]; //$_POST['xoops_upload_file'][1];
             $slides2 = getFile($slides2);
         }
-        if (isset($_POST['xoops_upload_file'][2]) && !empty($_POST['slides3'])) {
-            $slides3 = $_POST['xoops_upload_file'][2];
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[2]) //$_POST['xoops_upload_file'][2])
+            && !empty(XoopsRequest::getString('slides3', null, 'POST')) //$_POST['slides3'])
+        ) {
+            $slides3 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[2]; //$_POST['xoops_upload_file'][2];
             $slides3 = getFile($slides3);
         }
-        if (isset($_POST['xoops_upload_file'][3]) && !empty($_POST['slides4'])) {
-            $slides4 = $_POST['xoops_upload_file'][3];
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[3]) //$_POST['xoops_upload_file'][3])
+            && !empty(XoopsRequest::getString('slides4', null, 'POST')) //$_POST['slides4'])
+        ) {
+            $slides4 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[3]; //$_POST['xoops_upload_file'][3];
             $slides4 = getFile($slides4);
         }
-        $sid = $_POST['sid'];
+        $sid = XoopsRequest::getInt('sid', 0, 'POST');//$_POST['sid'];
         $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_speeches')
-                                  . " SET title='$title', summary='$summary', stime='$stime', etime='$etime', cvid='$cvid', cid='$cid', tid='$tid',duration='$duration', slides1='$slides1', slides2='$slides2', slides3='$slides3', slides4='$slides4' WHERE sid=$sid") OR $eh::show('0013');
+                                  . " SET title='$title', summary='$summary', stime='$stime', etime='$etime', speakerid='$speakerid', cid='$cid', tid='$tid',duration='$duration', slides1='$slides1', slides2='$slides2', slides3='$slides3', slides4='$slides4' WHERE sid=$sid") or $eh::show('0013');
         if ($result) {
             redirect_header('speeches.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
@@ -75,22 +85,22 @@ switch ($fct) {
     case 'editspeech':
         xoops_cp_header();
 
-        $action = $_POST['action'];
+        $action = $action = XoopsRequest::getString('action', 0, 'POST');//$_POST['action'];
         if ($action === 'upd') {
-            $sid = trim($_POST['sid']) OR $eh::show('1001');
-            $result = $xoopsDB->query('SELECT title,summary,stime,etime,cvid,cid,tid,duration,slides1,slides2,slides3,slides4 FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid") OR $eh::show('0013');
-            list($title_v, $summary_v, $stime_v, $etime_v, $cvid_v, $cid_v, $tid_v, $duration_v, $slides1_v, $slides2_v, $slides3_v, $slides4_v) = $xoopsDB->fetchRow($result);
+            $sid = XoopsRequest::getInt('sid', 0, 'POST');//trim($_POST['sid']) or $eh::show('1001');
+            $result = $xoopsDB->query('SELECT title,summary,stime,etime,speakerid,cid,tid,duration,slides1,slides2,slides3,slides4 FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid") or $eh::show('0013');
+            list($title_v, $summary_v, $stime_v, $etime_v, $speakerid_v, $cid_v, $tid_v, $duration_v, $slides1_v, $slides2_v, $slides3_v, $slides4_v) = $xoopsDB->fetchRow($result);
 
-            // Get the available CVs
-            $result = $xoopsDB->query('SELECT cvid, name FROM ' . $xoopsDB->prefix('myconference_bios') . ' ORDER BY Name ASC') OR $eh::show('0013');
-            $cv_select = new XoopsFormSelect(_AM_MYCONFERENCE_SPEAKERSNAME, 'cvid', $cvid_v);
-            $cv_select->addOption(0, _AM_MYCONFERENCE_NONE);
-            while (list($cvid, $name) = $xoopsDB->fetchRow($result)) {
-                $cv_select->addOption($cvid, $name);
+            // Get the available Speakers
+            $result = $xoopsDB->query('SELECT speakerid, name FROM ' . $xoopsDB->prefix('myconference_speakers') . ' ORDER BY Name ASC') or $eh::show('0013');
+            $speakerSelect = new XoopsFormSelect(_AM_MYCONFERENCE_SPEAKERSNAME, 'speakerid', $speakerid_v);
+            $speakerSelect->addOption(0, _AM_MYCONFERENCE_NONE);
+            while (list($speakerid, $name) = $xoopsDB->fetchRow($result)) {
+                $speakerSelect->addOption($speakerid, $name);
             }
 
             // Get the available congress
-            $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC') OR $eh::show('0013');
+            $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC') or $eh::show('0013');
             $cid_select = new XoopsFormSelect(_AM_MYCONFERENCE_CONFERENCESTITLE, 'cid', $cid_v);
             $cid_select->addOption(0, _AM_MYCONFERENCE_NONE);
             while (list($cid, $title) = $xoopsDB->fetchRow($result)) {
@@ -98,7 +108,7 @@ switch ($fct) {
             }
 
             // Get the available tracks
-            $result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . ' ORDER BY Title ASC') OR $eh::show('0013');
+            $result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . ' ORDER BY Title ASC') or $eh::show('0013');
             $trk_select = new XoopsFormSelect(_AM_MYCONFERENCE_TRACKSTITLE, 'tid', $tid_v);
             $trk_select->addOption(0, _AM_MYCONFERENCE_NONE);
             while (list($tid, $title) = $xoopsDB->fetchRow($result)) {
@@ -123,7 +133,7 @@ switch ($fct) {
             $form->setExtra('enctype="multipart/form-data"');
             $form->addElement($title, true);
             $form->addElement($stime);
-            $form->addElement($cv_select, true);
+            $form->addElement($speakerSelect, true);
             $form->addElement($cid_select);
             $form->addElement($trk_select);
             $form->addElement($duration, true);
@@ -140,31 +150,31 @@ switch ($fct) {
 
             xoops_cp_footer();
         } elseif ($action === 'del') {
-            $sid = trim($_POST['sid']) OR $eh::show('1001');
+            $sid = XoopsRequest::getInt('sid', 0, 'POST');//trim($_POST['sid']) or $eh::show('1001');
             xoops_confirm(array('fct' => 'delspeechok', 'sid' => $sid), 'speeches.php', _AM_MYCONFERENCE_DELSPEECH);
             xoops_cp_footer();
         }
         break;
 
     case 'delspeechok':
-        $cvid = trim($_POST['sid']) OR $eh::show('1001');
-        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid") OR $eh::show('0013');
+        $speakerid = XoopsRequest::getInt('sid', 0, 'POST');//trim($_POST['sid']) or $eh::show('1001');
+        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE sid=$sid") or $eh::show('0013');
         redirect_header('speeches.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         break;
     case 'addspeech':
         $eh      = new ErrorHandler;
-        $title   = $_POST['title'];
-        $summary = $_POST['summary'];
+        $title   = XoopsRequest::getString('title', '', 'POST');//$_POST['title'];
+        $summary = XoopsRequest::getText('summary', '', 'POST');//$_POST['summary'];
 
-        $stime = $_POST['stime'];
+        $stime = XoopsRequest::getString('stime', '', 'POST');//$_POST['stime'];
         $date  = strtotime(array_shift($stime));
         $date += array_shift($stime);
-        $stime    = $date;
-        $duration = $_POST['duration'];
-        $etime    = $stime + $duration * 60;
-        $cvid     = (int)$_POST['cvid'];
-        $cid      = (int)$_POST['cid'];
-        $tid      = (int)$_POST['tid'];
+        $stime     = $date;
+        $duration  = XoopsRequest::getInt('duration', 0, 'POST');//$_POST['duration'];
+        $etime     = $stime + $duration * 60;
+        $speakerid = XoopsRequest::getInt('speakerid', 0, 'POST');//$_POST['speakerid'];
+        $cid       = XoopsRequest::getInt('cid', 0, 'POST');//$_POST['cid'];
+        $tid       = XoopsRequest::getInt('tid', 0, 'POST');//$_POST['tid'];
 
         // strip time and date
         //reset($stime);
@@ -172,26 +182,35 @@ switch ($fct) {
         //$date += array_shift($stime);
         //$stime = $date;
 
-        if (isset($_POST['xoops_upload_file'][0]) && !empty($_POST['slides1'])) {
-            $slides1 = $_POST['xoops_upload_file'][0];
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[0]) //$_POST['xoops_upload_file'][0])
+            && !empty(XoopsRequest::getString('slides1', null, 'POST')) //$_POST['slides1'])
+        ) {
+            $slides1 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[0]; //$_POST['xoops_upload_file'][0];
             $slides1 = getFile($slides1);
         }
-        if (isset($_POST['xoops_upload_file'][1]) && !empty($_POST['slides2'])) {
-            $slides2 = $_POST['xoops_upload_file'][1];
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[1]) //$_POST['xoops_upload_file'][1])
+            && !empty(XoopsRequest::getString('slides2', null, 'POST')) //$_POST['slides2'])
+        ) {
+            $slides2 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[1]; //$_POST['xoops_upload_file'][1];
             $slides2 = getFile($slides2);
         }
-        if (isset($_POST['xoops_upload_file'][2]) && !empty($_POST['slides3'])) {
-            $slides3 = $_POST['xoops_upload_file'][2];
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[2]) //$_POST['xoops_upload_file'][2])
+            && !empty(XoopsRequest::getString('slides3', null, 'POST')) //$_POST['slides3'])
+        ) {
+            $slides3 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[2]; //$_POST['xoops_upload_file'][2];
             $slides3 = getFile($slides3);
         }
-        if (isset($_POST['xoops_upload_file'][3]) && !empty($_POST['slides4'])) {
-            $slides4 = $_POST['xoops_upload_file'][3];
+        if (isset(XoopsRequest::getString('xoops_upload_file', null, 'POST')[3]) //$_POST['xoops_upload_file'][3])
+            && !empty(XoopsRequest::getString('slides4', null, 'POST')) //$_POST['slides4'])
+        ) {
+            $slides4 = XoopsRequest::getString('xoops_upload_file', null, 'POST')[3]; //$_POST['xoops_upload_file'][3];
             $slides4 = getFile($slides4);
         }
-        $sid = $_POST['sid'];
+        $sid = XoopsRequest::getInt('sid', 0, 'POST');//$_POST['sid'];
 
         $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_speeches')
-                                  . " (title,summary,stime,etime,cvid,cid,tid,slides1,slides2,slides3,slides4,duration) VALUES (\"$title\",\"$summary\",\"$stime\",\"$etime\", \"$cvid\",\"$cid\",\"$tid\",\"$slides1\",\"$slides2\",\"$slides3\",\"$slides4\",\"$duration\")") OR $eh::show('0013');
+                                  . " (title,summary,stime,etime,speakerid,cid,tid,slides1,slides2,slides3,slides4,duration) VALUES (\"$title\",\"$summary\",\"$stime\",\"$etime\", \"$speakerid\",\"$cid\",\"$tid\",\"$slides1\",\"$slides2\",\"$slides3\",\"$slides4\",\"$duration\")")
+        or $eh::show('0013');
         if ($result) {
             redirect_header('speeches.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
@@ -200,7 +219,7 @@ switch ($fct) {
         xoops_cp_header();
 
         // Get available speeches for the Update/Delete form
-        $result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_speeches') . ' ORDER BY Title ASC') OR $eh::show('0013');
+        $result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_speeches') . ' ORDER BY Title ASC') or $eh::show('0013');
         $speech_select = new XoopsFormSelect(_AM_MYCONFERENCE_TITLE, 'sid');
         while (list($sid, $title) = $xoopsDB->fetchRow($result)) {
             $speech_select->addOption($sid, $title);
@@ -221,16 +240,16 @@ switch ($fct) {
         $editform->display();
 
         $cid_v = '';
-        // Get the available CVs
-        $result = $xoopsDB->query('SELECT cvid, name FROM ' . $xoopsDB->prefix('myconference_bios') . ' ORDER BY Name ASC') OR $eh::show('0013');
-        $cv_select = new XoopsFormSelect(_AM_MYCONFERENCE_SPEAKERSNAME, 'cvid');
-        $cv_select->addOption(0, _AM_MYCONFERENCE_NONE);
-        while (list($cvid, $name) = $xoopsDB->fetchRow($result)) {
-            $cv_select->addOption($cvid, $name);
+        // Get the available Speakers
+        $result = $xoopsDB->query('SELECT speakerid, name FROM ' . $xoopsDB->prefix('myconference_speakers') . ' ORDER BY Name ASC') or $eh::show('0013');
+        $speakerSelect = new XoopsFormSelect(_AM_MYCONFERENCE_SPEAKERSNAME, 'speakerid');
+        $speakerSelect->addOption(0, _AM_MYCONFERENCE_NONE);
+        while (list($speakerid, $name) = $xoopsDB->fetchRow($result)) {
+            $speakerSelect->addOption($speakerid, $name);
         }
 
         // Get the available congress
-        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC') OR $eh::show('0013');
+        $result = $xoopsDB->query('SELECT cid, title FROM ' . $xoopsDB->prefix('myconference_main') . ' ORDER BY Title ASC') or $eh::show('0013');
         $cid_select = new XoopsFormSelect(_AM_MYCONFERENCE_CONFERENCESTITLE, 'cid', $cid_v);
         $cid_select->addOption(0, _AM_MYCONFERENCE_NONE);
         while (list($cid, $title) = $xoopsDB->fetchRow($result)) {
@@ -238,7 +257,7 @@ switch ($fct) {
         }
 
         // Get the available tracks
-        $result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . ' ORDER BY Title ASC') OR $eh::show('0013');
+        $result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . ' ORDER BY Title ASC') or $eh::show('0013');
         $trk_select = new XoopsFormSelect(_AM_MYCONFERENCE_TRACKSTITLE, 'tid', 0);
         $trk_select->addOption(0, _AM_MYCONFERENCE_NONE);
         while (list($tid, $title) = $xoopsDB->fetchRow($result)) {
@@ -259,7 +278,7 @@ switch ($fct) {
         $form = new XoopsThemeForm(_AM_MYCONFERENCE_ADDSPEECH, 'addspeechform', 'speeches.php');
         $form->setExtra('enctype="multipart/form-data"');
         $form->addElement($title, true);
-        $form->addElement($cv_select, true);
+        $form->addElement($speakerSelect, true);
         $form->addElement($cid_select);
         $form->addElement($trk_select);
         $form->addElement($stime, true);

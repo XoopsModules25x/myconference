@@ -19,10 +19,10 @@
 // ------------------------------------------------------------------------- //
 
 define('_AM_MYCONFERENCE_ACTION', 'Action');
-define('_AM_MYCONFERENCE_ADDCV', 'Add a CV');
-define('_AM_MYCONFERENCE_EDITCV', 'Edit a CV');
-define('_AM_MYCONFERENCE_DELCV', 'Delete a CV');
-define('_AM_MYCONFERENCE_UPDCV', 'Update a CV');
+define('_AM_MYCONFERENCE_ADD_SPEAKER', 'Add a Speaker');
+define('_AM_MYCONFERENCE_EDIT_SPEAKER', 'Edit a Speaker');
+define('_AM_MYCONFERENCE_DEL_SPEAKER', 'Delete a Speaker');
+define('_AM_MYCONFERENCE_UPD_SPEAKER', 'Update a Speaker');
 define('_AM_MYCONFERENCE_NAME', 'Name');
 define('_AM_MYCONFERENCE_EMAIL', 'Email Address');
 define('_AM_MYCONFERENCE_URL', 'URL');
@@ -30,14 +30,14 @@ define('_AM_MYCONFERENCE_PHOTO', 'Picture');
 define('_AM_MYCONFERENCE_PHOTO_WARN', "Picture<br><font color='red'>(picture will be lost if<br> not reentered)</font>");
 define('_AM_MYCONFERENCE_COMPANY', 'Company');
 define('_AM_MYCONFERENCE_LOCATION', 'Location');
-define('_AM_MYCONFERENCE_MINICV', 'Small description');
+define('_AM_MYCONFERENCE_MINI_BIO', 'Small Bio description');
 define('_AM_MYCONFERENCE_SUBMIT', 'Submit');
 define('_AM_MYCONFERENCE_EDIT', 'Edit');
 define('_AM_MYCONFERENCE_DELE', 'Delete');
 define('_AM_MYCONFERENCE_UPDATE', 'Update');
 define('_AM_MYCONFERENCE_DBUPDATED', 'Database updated');
 
-define('_AM_MYCONFERENCE_BIOS', 'Bios');
+define('_AM_MYCONFERENCE_SPEAKERS', 'Speakers');
 define('_AM_MYCONFERENCE_SPO', 'Sponsors');
 define('_AM_MYCONFERENCE_SPE', 'Speech');
 define('_AM_MYCONFERENCE_REG', 'Registration');
@@ -92,6 +92,15 @@ define('_AM_MYCONFERENCE_FILENAMEEXISTS', 'File name already exists');
 define('_AM_MYCONFERENCE_DELCONFERENCE', 'Delete Conference');
 define('_AM_MYCONFERENCE_DELSECTION', 'Delete Section');
 define('_AM_MYCONFERENCE_DELTRACK', 'Delete Track');
+
+define('_AM_MYCONFERENCE_UPGRADEFAILED0', "Update failed - couldn't rename field '%s'");
+define('_AM_MYCONFERENCE_UPGRADEFAILED1', "Update failed - couldn't add new fields");
+define('_AM_MYCONFERENCE_UPGRADEFAILED2', "Update failed - couldn't rename table '%s'");
+define('_AM_MYCONFERENCE_ERROR_COLUMN', 'Could not create column in database : %s');
+define('_AM_MYCONFERENCE_ERROR_BAD_XOOPS', 'This module requires XOOPS %s+ (%s installed)');
+define('_AM_MYCONFERENCE_ERROR_BAD_PHP', 'This module requires PHP version %s+ (%s installed)');
+define('_AM_MYCONFERENCE_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module');
+
 
 
 

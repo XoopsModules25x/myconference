@@ -19,7 +19,8 @@
 // ------------------------------------------------------------------------- //
 
 include __DIR__ . '/header.php';
-$eh = new ErrorHandler;
+include XOOPS_ROOT_PATH . '/header.php';
+//$eh = new ErrorHandler;
 
 function printRow($ctime, $row, $tpos, $class)
 {
@@ -42,19 +43,21 @@ function printRow($ctime, $row, $tpos, $class)
     echo "</tr>\n";
 }
 
-if (isset($_GET['cid'])) {
-    $cid = $_GET['cid'];
-} elseif (isset($_POST['cid'])) {
-    $cid = $_POST['cid'];
-}
+//if (isset($_GET['cid'])) {
+//    $cid = $_GET['cid'];
+//} elseif (isset($_POST['cid'])) {
+//    $cid = $_POST['cid'];
+//}
 
-if (empty($cid)) {
-    $result = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1');// OR $eh::show("1001");
+$cid     = XoopsRequest::getInt('cid', XoopsRequest::getInt('cid', 0, 'GET'), 'POST');
+
+if (0 === $cid) {
+    $result = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix('myconference_main') . ' WHERE isdefault=1');// or $eh::show("1001");
     list($cid) = $xoopsDB->fetchRow($result);
 }
 
 // Get the days of this congress
-$cr = $xoopsDB->query('SELECT title, subtitle, subsubtitle, sdate, edate FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid");// OR $eh::show("0013");
+$cr = $xoopsDB->query('SELECT title, subtitle, subsubtitle, sdate, edate FROM ' . $xoopsDB->prefix('myconference_main') . " WHERE cid=$cid");// or $eh::show("0013");
 list($ctitle, $subtitle, $subsubtitle, $sdate, $edate) = $xoopsDB->fetchRow($cr);
 $sdate = strtotime($sdate . ' 0:00:00');
 $edate = strtotime($edate . ' 23:59:59');
@@ -69,7 +72,7 @@ echo "
     <hr width=50% align='center'>
 ";
 
-$result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE cid=$cid ORDER BY title");// OR $eh::show("0013");
+$result = $xoopsDB->query('SELECT sid, title FROM ' . $xoopsDB->prefix('myconference_sections') . " WHERE cid=$cid ORDER BY title");// or $eh::show("0013");
 
 echo " <table class='outer' border='0' cellspacing='5' cellpadding='0' align='center' width='100%'> <tr>\n";
 $count = 1;
@@ -91,7 +94,7 @@ for ($d = $sdate; $d <= $edate; $d += $oneday) {
     echo "<table width=100%>\n";
 
     // Get tracks
-    $t_result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . " WHERE cid=$cid order by tid");// OR $eh::show("0013");
+    $t_result = $xoopsDB->query('SELECT tid, title FROM ' . $xoopsDB->prefix('myconference_tracks') . " WHERE cid=$cid order by tid");// or $eh::show("0013");
     $i        = 0;
     while (list($tid, $tit) = $xoopsDB->fetchRow($t_result)) {
         $tpos[$tid]  = ++$i;
@@ -103,7 +106,7 @@ for ($d = $sdate; $d <= $edate; $d += $oneday) {
     }
 
     // Get speeches ordered by time
-    $s_result = $xoopsDB->query('SELECT sid, tid, stime, etime FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE cid=$cid AND stime BETWEEN $d AND $d+$oneday ORDER BY stime");// OR $eh::show("0013");
+    $s_result = $xoopsDB->query('SELECT sid, tid, stime, etime FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE cid=$cid AND stime BETWEEN $d AND $d+$oneday ORDER BY stime");// or $eh::show("0013");
     $earliest = 9999999999;
     $oldest   = -1;
 
@@ -130,7 +133,7 @@ for ($d = $sdate; $d <= $edate; $d += $oneday) {
         $class = ($class === 'even') ? 'odd' : 'even';
         echo "<td class=$class width=$swidth align=\"center\" style=\"vertical-align: middle;\"> " . date('H:i', $i) . "</td>\n";
         //query de charlas que tienen este horario en su rango
-        $s_result = $xoopsDB->query('SELECT sid, tid, stime, duration FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE cid=$cid AND $i BETWEEN stime AND etime ORDER BY stime, tid");// OR $eh::show("0013");
+        $s_result = $xoopsDB->query('SELECT sid, tid, stime, duration FROM ' . $xoopsDB->prefix('myconference_speeches') . " WHERE cid=$cid AND $i BETWEEN stime AND etime ORDER BY stime, tid");// or $eh::show("0013");
         $printpos = array();
         $row      = array();
         while (list($sid, $tid, $stime, $duration) = $xoopsDB->fetchRow($s_result)) {

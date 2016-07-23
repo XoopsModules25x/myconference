@@ -42,8 +42,8 @@ $adminmenu[] = array(
 );
 
 $adminmenu[] = array(
-    'title' => _MI_MYCONFERENCE_BIOS,
-    'link'  => 'admin/bios.php',
+    'title' => _MI_MYCONFERENCE_SPEAKERS,
+    'link'  => 'admin/speakers.php',
     'icon'  => $pathIcon32 . '/users.png'
 );
 

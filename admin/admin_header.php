@@ -42,6 +42,8 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl))
 //include_once $GLOBALS['xoops']->path("modules/{$moduleDirName}/include/functions.php");
 //include_once $GLOBALS['xoops']->path("modules/{$moduleDirName}/include/config.php");
 
+include_once dirname(__DIR__) . '/class/utilities.php';
+
 //Handlers
 //$XXXHandler = xoops_getModuleHandler('XXX', $moduleDirName);
 

@@ -1,5 +1,6 @@
 Features del Modulo para Eventos:
 
+Tablas:
 Formularios:
 	1) Evento (fecha/dias)
 	- CVs
@@ -9,7 +10,7 @@ Formularios:
 		- Upload de presentaciones
 	- Evaluacion de la charla?
 	- Envio de charlas por los visitantes del sitio?
-	- Auspiciantes/Organizador? 
+	- Auspiciantes/Organizador?
 		- Preguntar si se los ordena por orden alfabetico
 		- Categorias de sponsors (tildar si se pone en el footer)
 Bloque:
@@ -17,7 +18,7 @@ Bloque:
 	- Programa
 
 Features:
-	- Registracion 
+	- Registracion
 		-impresion de formulario de ingreso ``rapido''
 		-registracion externa
 		-formulario armable por el usuario?
@@ -30,9 +31,8 @@ Features:
 	- PDF con el programa (+ sponsors y organizador)
 
 ## db ##
-Tablas: 
     - conference_congress
-    - conference_cvs
+    - conference_speakers
     - conference_speech_type
     - conference_speech
     - conference_tracks
@@ -48,8 +48,8 @@ Tablas:
 	- subsubtitle
 	- logo
 
-+ conference_cvs
-	- cvid
++ conference_speakers
+	- speakerid
 	- name
 	- email
 	- descrip
