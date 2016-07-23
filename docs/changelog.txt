@@ -10,7 +10,7 @@
 - created a Tutorial (mamba)
 - added auto-create of upload folders during install (mamba)
 - added Utilities class (mamba)
-
+- removed ErrorHandler, will be replaced later (mamba)
 - still more cleanup needed, especially with pictures....
 
 1.0

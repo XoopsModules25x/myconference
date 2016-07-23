@@ -76,7 +76,7 @@ switch ($fct) {
             $photo2 = getFile($photo2);
         }
         $speakerid = XoopsRequest::getInt('speakerid', 0, 'POST');//$_POST['speakerid'];
-        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_speakers') . " SET name='$name', email='$email', descrip='$descrip', location='$location', company='$company', photo='$photo', url='$url' WHERE speakerid=$speakerid") or $eh::show('0013');
+        $result = $xoopsDB->query('UPDATE ' . $xoopsDB->prefix('myconference_speakers') . " SET name='$name', email='$email', descrip='$descrip', location='$location', company='$company', photo='$photo', url='$url' WHERE speakerid=$speakerid");// or $eh::show('0013');
         if ($result) {
             redirect_header('speakers.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
@@ -91,7 +91,7 @@ switch ($fct) {
         $action = XoopsRequest::getString('action', 0, 'POST');//$_POST['action'];
         if ($action === 'upd') {
             $speakerid = XoopsRequest::getInt('speakerid', 0, 'POST');//trim($_POST['speakerid']) or $eh::show('1001');
-            $result = $xoopsDB->query('SELECT name,email,company,location,url,photo,descrip FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid") or $eh::show('0013');
+            $result = $xoopsDB->query('SELECT name,email,company,location,url,photo,descrip FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid");// or $eh::show('0013');
             list($name_v, $email_v, $company_v, $location_v, $url_v, $photo_v, $minibio_v) = $xoopsDB->fetchRow($result);
 
             $name      = new XoopsFormText(_AM_MYCONFERENCE_NAME, 'speakerName', 50, 100, $name_v);
@@ -158,7 +158,7 @@ switch ($fct) {
 
     case 'delspeakerok':
         $speakerid = XoopsRequest::getInt('speakerid', 0, 'POST');//trim($_POST['speakerid']) or $eh::show('1001');
-        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid") or $eh::show('0013');
+        $result = $xoopsDB->query('DELETE FROM ' . $xoopsDB->prefix('myconference_speakers') . " WHERE speakerid=$speakerid");// or $eh::show('0013');
         redirect_header('speakers.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         break;
     case 'addspeaker':
@@ -187,7 +187,7 @@ switch ($fct) {
             $photo = getFile($photo);
         }
 
-        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_speakers') . " (name,email,descrip,location,company,photo,url) VALUES ('$name','$email','$descrip','$location','$company','$photo','$url')") or $eh::show('0013');
+        $result = $xoopsDB->query('INSERT INTO ' . $xoopsDB->prefix('myconference_speakers') . " (name,email,descrip,location,company,photo,url) VALUES ('$name','$email','$descrip','$location','$company','$photo','$url')");// or $eh::show('0013');
         if ($result) {
             redirect_header('speakers.php', 2, _AM_MYCONFERENCE_DBUPDATED);
         }
@@ -195,7 +195,7 @@ switch ($fct) {
     default:
         xoops_cp_header();
 
-        $result = $xoopsDB->query('SELECT speakerid, name FROM ' . $xoopsDB->prefix('myconference_speakers') . ' ORDER BY Name ASC') or $eh::show('0013');
+        $result = $xoopsDB->query('SELECT speakerid, name FROM ' . $xoopsDB->prefix('myconference_speakers') . ' ORDER BY Name ASC');// or $eh::show('0013');
         $speakerSelect = new XoopsFormSelect(_AM_MYCONFERENCE_NAME, 'speakerid');
         while (list($speakerid, $name) = $xoopsDB->fetchRow($result)) {
             $speakerSelect->addOption($speakerid, $name);
